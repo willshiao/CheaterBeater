@@ -1,12 +1,15 @@
 'use strict'
 
 const fs = require('fs').promises
+const fsSync = require('fs')
 const mkdirp = require('mkdirp')
 const config = require('config')
+const crypto = require('crypto')
 const path = require('path')
 const simpleGit = require('simple-git/promise')
-const git = simpleGit()
+const { findFiles } = require('./extensionHelper')
 
+const git = simpleGit()
 const REPO_DIR = config.get('repoDir')
 
 // Create folder to hold repos if it doesn't exist
@@ -25,6 +28,26 @@ async function cloneRepo(repoUrl, cacheRepos = true) {
   return repoPath
 }
 
+async function hashFile (filename) {
+  // console.log('Hashing: ', filename)
+  return new Promise((resolve, reject) => {
+    const hashSum = crypto.createHash(config.get('hashAlgorithm'))
+    const stream = fsSync.createReadStream(filename)
+    stream.on('data', data => hashSum.update(data))
+    stream.on('end', () => resolve(hashSum.digest('hex')))
+    stream.on('error', reject)
+  })
+}
+
+async function getHashes (repoPath) {
+  const hashToFile = {}
+  await findFiles(repoPath, async (filePath) => {
+    const fileHash = await hashFile(filePath)
+    hashToFile[fileHash] = filePath
+  }, true)
+  return hashToFile
+}
+
 // async function findLanguages()
 
-module.exports = { cloneRepo }
+module.exports = { cloneRepo, getHashes }

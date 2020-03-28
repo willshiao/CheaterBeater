@@ -8,8 +8,11 @@ const languageMap = require('language-map')
 
 // Reverse the map, we want extension => language
 const revMap = {}
+const languageBlacklist = new Set(config.get('languageBlacklist'))
+
 for (const langName in languageMap) {
   const langVal = languageMap[langName]
+  if (languageBlacklist.has(langName)) continue
   if (langVal.type !== 'programming' || !langVal.extensions) continue
   langVal.extensions.forEach(ext => {
     revMap[ext] = langName
@@ -28,20 +31,20 @@ function file2Lang (filePath) {
 }
 
 function shouldSkip (dirName) {
-  return (dirName in fileBlacklist)
+  return fileBlacklist.has(dirName)
 }
 
 async function findFiles (filePath, fileCb, fullPath = false) {
   const files = await fs.readdir(filePath, { withFileTypes: true })
-  await Promise.map(files, (file) => {
+  await Promise.map(files, async (file) => {
     if (file.isDirectory()) {
       if (shouldSkip(file.name)) return null
-      return findFiles(path.join(filePath, file.name), fileCb)
+      return findFiles(path.join(filePath, file.name), fileCb, fullPath)
     } else { // Is file
       if (fullPath) {
-        fileCb(path.join(filePath, file.name))
+        await fileCb(path.join(filePath, file.name))
       } else {
-        fileCb(file.name)
+        await fileCb(file.name)
       }
     }
   }, { concurrency: 2 })
