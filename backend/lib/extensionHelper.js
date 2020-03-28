@@ -2,13 +2,17 @@
 
 const Promise = require('bluebird')
 const path = require('path')
+const fsSync = require('fs')
 const fs = require('fs').promises
+const mkdirp = require('mkdirp')
 const config = require('config')
 const languageMap = require('language-map')
+const parser = require('gitignore-parser')
 
 // Reverse the map, we want extension => language
 const revMap = {}
 const languageBlacklist = new Set(config.get('languageBlacklist'))
+const gitignore = parser.compile(fsSync.readFileSync('data/selective.gitignore', 'utf8'))
 
 for (const langName in languageMap) {
   const langVal = languageMap[langName]
@@ -50,10 +54,27 @@ async function findFiles (filePath, fileCb, fullPath = false) {
   }, { concurrency: 2 })
 }
 
+async function findFilesWithIgnore (filePath, fileCb, fullPath = false) {
+  const files = await fs.readdir(filePath, { withFileTypes: true })
+  await Promise.map(files, async (file) => {
+    const longPath = path.join(filePath, file.name)
+    if (gitignore.denies(file.name)) return null
+    if (file.isDirectory()) {
+      return findFiles(longPath, fileCb, fullPath)
+    } else { // Is file
+      if (fullPath) {
+        await fileCb(longPath)
+      } else {
+        await fileCb(file.name)
+      }
+    }
+  }, { concurrency: 2 })
+}
+
 async function getDirLanguages (targetPath) {
   // const fileList = await nodeDir.promiseFiles(targetPath)
   const fileExts = new Set()
-  await findFiles(targetPath, (file) => {
+  await findFilesWithIgnore(targetPath, (file) => {
     const lang = file2Lang(file)
     if (lang !== null) fileExts.add(lang)
   })
@@ -62,4 +83,43 @@ async function getDirLanguages (targetPath) {
   // return new Set(fileList.map(file2Lang))
 }
 
-module.exports = { ext2Lang, file2Lang, getDirLanguages, findFiles }
+async function concatByLanguage (targetPath, saveToFs = true) {
+  const dirName = path.join(targetPath, '___lang_jihwan')
+  await mkdirp(dirName)
+  // TODO: check if dir already exists
+  const langStrs = {}
+  const langCurrentIdxs = {}
+  const langStoredIdxs = {}
+  await findFilesWithIgnore(targetPath, async (file) => {
+    const fileLang = file2Lang(file)
+    if (fileLang === null) return null
+    const fileContents = await fs.readFile(file, 'utf8')
+    // Slow, but we can fix later (hopefully)
+    const numLines = fileContents.split('\n').length
+    if (fileLang in langStrs) {
+      langStrs[fileLang] += fileContents
+      langCurrentIdxs[fileLang] += numLines
+      langStoredIdxs[fileLang].push({
+        pos: langCurrentIdxs[fileLang],
+        path: fileLang
+      })
+    } else {
+      langStrs[fileLang] = fileContents
+      langCurrentIdxs[fileLang] = numLines
+      langStoredIdxs[fileLang] = [{
+        pos: numLines,
+        path: fileLang
+      }]
+    }
+  }, true)
+  if (saveToFs) {
+    for (let langName in langStrs) {
+      const cleanLangName = langName.split(' ').join('_')
+      await fs.writeFile(path.join(dirName, cleanLangName), langStrs[langName])
+    }
+    fs.writeFile(path.join(dirName, 'index-json'), JSON.stringify(langStoredIdxs))
+  }
+  return [langStrs, langStoredIdxs]
+}
+
+module.exports = { ext2Lang, file2Lang, getDirLanguages, findFiles, findFilesWithIgnore, concatByLanguage }

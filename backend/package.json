@@ -22,6 +22,7 @@
     "cheerio": "^1.0.0-rc.3",
     "config": "^3.3.1",
     "express": "^4.17.1",
+    "gitignore-parser": "0.0.2",
     "language-map": "^1.4.0",
     "mkdirp": "^1.0.3",
     "simple-git": "^1.132.0"
