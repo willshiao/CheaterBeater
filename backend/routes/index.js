@@ -50,7 +50,7 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
 
   const userPages = await Promise.map(Array.from(teamMembers), async link => {
     return (await axios.get(link)).data
-  }, { concurrency: 1 })
+  }, { concurrency: 2 })
 
   // get devpost of each project except original link
   for (let i = 0; i < userPages.length; i++) {
@@ -80,7 +80,7 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
 
   const githubList = await Promise.map(Array.from(uniqueProjs), async link => {
     return (await axios.get(link)).data
-  }, { concurrency: 1 })
+  }, { concurrency: 2 })
 
   const filteredGittyLinks = githubList
     .map((page) => {
