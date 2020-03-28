@@ -1,10 +1,13 @@
 import React from 'react';
 import './Footer.scss';
+import content from '../../../content';
+
+const { footer } = content;
 
 const Footer = () => {
   return (
     <section className="Footer">
-      <p className="Footer__desc">Made with 🐍 at LA Hacks 2020</p>
+      <p className="Footer__desc">{footer.description}</p>
     </section>
   )
 }

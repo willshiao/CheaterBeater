@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import './Search.scss';
+import content from '../../../content';
 import { Input, Button, Form } from 'antd';
 import { BASE_URL } from '../../../shared/constants';
 import axios from 'axios';
 import spinner from '../../../assets/imgs/spinner.svg';
 
+const { search } = content;
 const { Item } = Form;
 
 class Search extends Component {
@@ -31,7 +33,7 @@ class Search extends Component {
       <section className="Search">
         <div className="container-fluid">
           <div className="row justify-content-center">
-            <h1 className="Search__title">Legit or Bust?</h1>
+            <h1 className="Search__title">{search.title}</h1>
           </div>
           <Form onFinish={this.handleFinish}>
             <div className="row justify-content-center">
@@ -49,7 +51,7 @@ class Search extends Component {
                   htmlType="submit"
                   className="Search__submit"
                 >
-                  GO
+                  {search.submit}
                 </Button>
               </div>
             </div>

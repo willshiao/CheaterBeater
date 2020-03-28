@@ -1,6 +1,9 @@
 import React from 'react';
 import './Challenges.scss';
+import content from '../../../content';
 import cbImage from '../../../assets/imgs/cb-2.svg';
+
+const { challenges } = content;
 
 const Challenges = () => {
   return (
@@ -12,8 +15,8 @@ const Challenges = () => {
           </div>
           <div className="col-6">
             <div className="Challenges__wrapper">
-              <h2 className="Challenges__title">Challenges</h2>
-              <p className="Challenges__desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vel lectus eget dui sagittis rutrum. Curabitur sed elit sed mi imperdiet tempus. Aliquam commodo aliquet arcu, eget consequat enim aliquam non. Vestibulum posuere, arcu eu egestas vehicula, metus erat sollicitudin neque, id sodales justo tortor sed orci. Proin vitae ex eget ante semper accumsan.</p>
+              <h2 className="Challenges__title">{challenges.title}</h2>
+              <p className="Challenges__desc">{challenges.description}</p>
             </div>
           </div>
         </div>
