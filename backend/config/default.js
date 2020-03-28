@@ -2,7 +2,7 @@
 
 module.exports = {
   site: {
-    port: 3000  // Default port number, can be overriden with the PORT env variable
+    port: 3000 // Default port number, can be overriden with the PORT env variable
   },
   // Lanaguages we don't care about, as listed here:
   // https://github.com/blakeembrey/language-map/blob/master/languages.json
