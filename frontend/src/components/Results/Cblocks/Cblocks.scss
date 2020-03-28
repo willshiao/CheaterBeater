@@ -1,0 +1,49 @@
+@import '../../../shared/variables.scss';
+
+.Cblocks__container {
+  width: 100vw;
+  height: 100%;
+  padding-left: 20%;
+  padding-right: 20%;
+  padding-top: 7%;
+}
+
+.Cblocks__header-container {
+  display: block;
+  width: 100%;
+}
+
+.Cblocks__block-container {
+  padding-top: 4%;
+  display: block;
+}
+
+.Cblocks__header {
+  text-align: center;
+  font-weight: 750;
+  font-size: 28px;
+}
+
+.Cblocks__subHeader {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.Cblocks__fileName {
+  margin: 0;
+  color: $dark-color;
+  font-size: 15px;
+  font-weight: 550;
+  padding-bottom: 0.5%;
+}
+
+.Cblocks__description {
+  padding-top: 1%;
+  color: $dark-color;
+}
+
+span {
+  border-radius: 10px !important;
+  padding: 2%;
+}

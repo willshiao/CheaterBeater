@@ -1,0 +1,47 @@
+@import '../../shared/variables.scss';
+
+.Results__parent {
+  width: 100vw;
+  height: 100%;
+}
+
+.Results__logo-container {
+  margin-left: 7%;
+}
+
+.Results__logo-styling {
+  width: 20px;
+  padding-top: 5px;
+  float: left;
+}
+
+.Results__header {
+  margin-top: 3.5%;
+  width: 100%;
+}
+
+.Results__heading {
+  margin: 0;
+  float: left;
+  font-weight: 750;
+  color: black;
+  font-size: 24px;
+  margin-left: 6px;
+}
+
+.Results__button {
+  float: right;
+  margin-right: 7%;
+  border-radius: 10px;
+  letter-spacing: 3px;
+  background: linear-gradient(90deg, #F46F6F 0%, #FF9473 100%);
+  color: white;
+  font-weight: 700;
+  opacity: 1.0;
+  -webkit-transition: opacity 0.5s;
+}
+
+.Results__button:hover {
+  background: linear-gradient(90deg, #F46F6F 0%, #FF9473 100%);
+  opacity: 0.7;
+}
