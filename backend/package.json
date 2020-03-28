@@ -17,7 +17,11 @@
   },
   "homepage": "https://github.com/willshiao/lahacks-2020#readme",
   "dependencies": {
+    "bluebird": "^3.7.2",
     "config": "^3.3.1",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "language-map": "^1.4.0",
+    "mkdirp": "^1.0.3",
+    "simple-git": "^1.132.0"
   }
 }
