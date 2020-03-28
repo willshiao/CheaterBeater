@@ -4,11 +4,14 @@ const router = require('express').Router()
 
 const Promise = require('bluebird')
 const bodyParser = require('body-parser')
-router.use(bodyParser.json())
-
 const cheerio = require('cheerio')
 const axios = require('axios')
+
 const { AsyncHandler } = require('../lib/errorHandlers.js')
+const { getDirLanguages } = require('../lib/extensionHelper.js')
+const { cloneRepo, getHashes } = require('../lib/repoHandler.js')
+
+router.use(bodyParser.json())
 
 function union (setA, setB) {
   const _union = new Set(setA)
@@ -22,7 +25,7 @@ function getGithubFromDevpost ($) {
   const firstGithubLink = $('span:contains("github.com")').parent().attr('href')
   // In case the last one doesn't work
   const altGithubLink = $('span:contains("GitHub Repo")').parent().attr('href')
-  return (firstGithubLink || altGithubLink) + '.git'
+  return (firstGithubLink || altGithubLink)
 }
 
 router.get('/test', (req, res) => {
@@ -39,6 +42,9 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
   const $ = cheerio.load(data.data)
   const githubLink = getGithubFromDevpost($)
   console.log('Link:', githubLink)
+  if (githubLink === undefined) {
+    return res.failMsg('Missing GitHub link')
+  }
 
   const teamMembers = new Set(Array.from($('#app-team .user-profile-link'))
     .map(el => $(el).attr('href')))
@@ -89,14 +95,54 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
       if (ghLink === undefined) console.log('Page:', page)
       return ghLink
     })
-    .filter(el => el !== 'undefined.git')
+    .filter(el => el !== undefined)
   // Add original link
   filteredGittyLinks.push(githubLink)
 
   // console.log(githubAllProjectLinks)
   //  githubAllProjectLinks
   console.log(filteredGittyLinks)
+  // clone all repos
+  let mainRepoLocation = null // location of our target repo
+  const repoLocations = (await Promise
+    .map(filteredGittyLinks, async (gLink) => {
+      const repoLocation = await cloneRepo(gLink)
+      if (gLink === githubLink) {
+        mainRepoLocation = repoLocation
+      }
+      return [gLink, repoLocation]
+    }, { concurrency: 1 }))
+    .filter(x => x[1])
 
+  const dirLanguages = {}
+  await Promise.map(repoLocations, async (pair) => {
+    console.log(pair)
+    dirLanguages[pair[0]] = await getDirLanguages(pair[1])
+  }, { concurrency: 1 })
+  console.log(dirLanguages)
+
+  const hashes = {}
+  const mainHashes = await getHashes(mainRepoLocation)
+  const matches = {}
+  await Promise.map(repoLocations, async ([gLink, repoDir]) => {
+    if (gLink === githubLink) return null
+    hashes[gLink] = await getHashes(repoDir)
+    for (let mainHash in mainHashes) {
+      if (mainHash in hashes[gLink]) {
+        const mainFile = mainHashes[mainHash]
+        const matchedFile = hashes[gLink][mainHash]
+        console.log('Found match with: ', matchedFile)
+        if (mainFile in matches) {
+          matches[mainFile].push(matchedFile)
+        } else {
+          matches[mainFile] = [matchedFile]
+        }
+      }
+    }
+  }, { concurrency: 1 })
+  console.log(hashes)
+  console.log('Matches:', matches)
+  
   // handle success
   // parse response data
   // now parse response to get the following:
@@ -104,6 +150,13 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
   // 2. get all members of the projects and their devposts
   // 3. get all the projects of those members
 
+  return res.successJson({ page: data.data })
+  // 2. get all members of the projects and their devposts
+  // 3. get all the projects of those members
+  // hi ji hwan
+  // hi adi. Will is coding very well
+  // Yes.
+  
   return res.successJson({ page: data.data })
 }))
 

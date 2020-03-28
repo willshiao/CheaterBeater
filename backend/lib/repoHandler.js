@@ -14,16 +14,32 @@ const REPO_DIR = config.get('repoDir')
 
 // Create folder to hold repos if it doesn't exist
 // Sync is okay because it's only 1 time on init
+// console.log('Creating', REPO_DIR, '???')
 mkdirp.sync(REPO_DIR)
+// console.log('Made:', made)
 
 async function cloneRepo(repoUrl, cacheRepos = true) {
   const repoName = new URL(repoUrl).pathname.split('/').pop()
   const repoPath = path.join(REPO_DIR, repoName)
-  const stat = await fs.stat(repoPath)
+  let repoExists = true
+  try {
+    const statInfo = await fs.stat(repoPath)
+    // await fs.access(repoPath, oldfs.constants.F_OK | oldfs.constants.W_OK | oldfs.constants.R_OK)
+    if (!statInfo.isDirectory()) repoExists = false
+  } catch (error) {
+    repoExists = false
+    console.log(repoPath, 'does not exist, cloning...', error)
+    // Does not exist yet
+  }
   // Don't create if it already exists
   // This kind of serves a filesystem cache
-  if (cacheRepos && !stat.isDirectory()) {
-    await git.clone(`${repoUrl}.git`, repoPath)
+  if (!repoExists || !cacheRepos) {
+    try {
+      await git.clone(`${repoUrl}.git`, repoPath)
+    } catch (err) {
+      if (err.message.includes('not found')) return null
+      throw err
+    }
   }
   return repoPath
 }
@@ -42,6 +58,7 @@ async function hashFile (filename) {
 async function getHashes (repoPath) {
   const hashToFile = {}
   await findFiles(repoPath, async (filePath) => {
+    // console.log('Hashing:', filePath)
     const fileHash = await hashFile(filePath)
     hashToFile[fileHash] = filePath
   }, true)
