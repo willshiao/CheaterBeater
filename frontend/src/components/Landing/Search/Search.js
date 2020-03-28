@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './Search.scss';
 import content from '../../../content';
 import { Input, Button, Form } from 'antd';
+import { Redirect } from 'react-router-dom';
 import { BASE_URL } from '../../../shared/constants';
 import axios from 'axios';
 import spinner from '../../../assets/imgs/spinner.svg';
@@ -17,18 +18,31 @@ class Search extends Component {
   handleFinish = values => {
     const { devpostUrl } = values;
     
-    axios.post(BASE_URL, {
-      url: devpostUrl
-    })
-      .then(response => {
-        console.log("GOT RESPONSE FROM POST REQUEST", response);
-      })
-      .catch(error => {
-        console.error(error);
-      })
+    this.setState({ devpostUrl });
+
+    // axios.post(BASE_URL, {
+    //   url: devpostUrl
+    // })
+    //   .then(response => {
+    //     console.log("GOT RESPONSE FROM POST REQUEST", response);
+    //   })
+    //   .catch(error => {
+    //     console.error(error);
+    //   })
   }
 
   render() {
+    const { devpostUrl } = this.state;
+
+    if (devpostUrl) {
+      return (
+        <Redirect push to={{
+          pathname: '/results',
+          state: { devpostUrl }
+        }}/>
+      )
+    }
+
     return (
       <section className="Search">
         <div className="container-fluid">
