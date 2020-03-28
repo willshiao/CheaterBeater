@@ -18,6 +18,13 @@ function union (setA, setB) {
   return _union
 }
 
+function getGithubFromDevpost ($) {
+  const firstGithubLink = $('span:contains("github.com")').parent().attr('href')
+  // In case the last one doesn't work
+  const altGithubLink = $('span:contains("GitHub Repo")').parent().attr('href')
+  return (firstGithubLink || altGithubLink) + '.git'
+}
+
 router.get('/test', (req, res) => {
   res.send('OK')
 })
@@ -30,14 +37,8 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
   const data = await axios.get(link)
   // console.log(data)
   const $ = cheerio.load(data.data)
-  // console.log("Hi Ji Hwan", $)
-  const firstGithubLink = $('span:contains("github.com")').parent().attr('href')
-  // In case the last one doesn't work
-  const altGithubLink = $('span:contains("GitHub Repo")').parent().attr('href')
-  let githubLink = firstGithubLink || altGithubLink
+  const githubLink = getGithubFromDevpost($)
   console.log('Link:', githubLink)
-
-  githubLink = githubLink + '.git'
 
   const teamMembers = new Set(Array.from($('#app-team .user-profile-link'))
     .map(el => $(el).attr('href')))
@@ -49,7 +50,7 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
 
   const userPages = await Promise.map(Array.from(teamMembers), async link => {
     return (await axios.get(link)).data
-  }, { concurrency: 3 })
+  }, { concurrency: 2 })
 
   // get devpost of each project except original link
   for (let i = 0; i < userPages.length; i++) {
@@ -75,26 +76,25 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
   // as long as new link != link
   // inside each member's devpost profie, loop through the list of projects and obtain its github link
   // const githubList = []
-  const githubAllProjectLinks = []
+  // const githubAllProjectLinks = []
 
   const githubList = await Promise.map(Array.from(uniqueProjs), async link => {
     return (await axios.get(link)).data
-  }, { concurrency: 3 })
+  }, { concurrency: 2 })
 
-  githubList.forEach((element) => {
-    const $ = cheerio.load(element)
-    // console.log("Hi Ji Hwan", $)
-    const firstGithubLink = $('span:contains("github.com")').parent().attr('href')
-    // In case the last one doesn't work
-    const altGithubLink = $('span:contains("GitHub Repo")').parent().attr('href')
-    const githubLink = firstGithubLink || altGithubLink
-    console.log('Link:', githubLink)
-    githubAllProjectLinks.push(githubLink)
-  })
+  const filteredGittyLinks = githubList
+    .map((page) => {
+      const $ = cheerio.load(page)
+      const ghLink = getGithubFromDevpost($)
+      if (ghLink === undefined) console.log('Page:', page)
+      return ghLink
+    })
+    .filter(el => el !== 'undefined.git')
+  // Add original link
+  filteredGittyLinks.push(githubLink)
 
-  console.log(githubAllProjectLinks)
-  const filteredGittyLinks = githubAllProjectLinks.filter(el => el !== undefined)
-  filteredGittyLinks.push(link)
+  // console.log(githubAllProjectLinks)
+  //  githubAllProjectLinks
   console.log(filteredGittyLinks)
 
   // handle success
