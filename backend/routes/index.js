@@ -133,7 +133,7 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
         const matchedFile = hashes[gLink][mainHash]
         console.log('Found match with: ', matchedFile)
         if (mainFile in matches) {
-          matches[mainFile].append(matchedFile)
+          matches[mainFile].push(matchedFile)
         } else {
           matches[mainFile] = [matchedFile]
         }
