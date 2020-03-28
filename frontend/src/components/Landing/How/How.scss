@@ -1,0 +1,46 @@
+@import '../../../shared/variables.scss';
+
+.How {
+  margin-top: 8%;
+}
+
+.How__title {
+  font-family: 'Circular';
+  color: $dark-color;
+  font-weight: 900;
+  word-spacing: -4px;
+  letter-spacing: -1px;
+  text-align: center;
+  font-size: 48px;
+}
+
+.How__wrapper {
+  background-color: $primary-color;
+  padding: 32px;
+  border-radius: 32px;
+}
+
+.How__subtitle {
+  font-family: 'Circular';
+  color: $dark-color;
+  font-weight: 900;
+  text-align: center;
+}
+
+.How__desc {
+  font-family: 'Circular';
+  color: white;
+  word-spacing: -4px;
+}
+
+.How__first {
+  background-color: $primary-color;
+}
+
+.How__second {
+  background: linear-gradient(90deg, #F46F6F 0%, #FF9473 100%);
+}
+
+.How__third {
+  background-color: $secondary-color;
+}

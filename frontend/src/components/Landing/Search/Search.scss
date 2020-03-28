@@ -1,0 +1,36 @@
+@import '../../../shared/variables.scss';
+
+.Search {
+  margin-bottom: 8%;
+}
+
+.Search__title {
+  font-family: "Circular";
+  font-weight: 900;
+  letter-spacing: -1px;
+  color: $dark-color;
+  word-spacing: -4px;
+  font-size: 64px;
+}
+
+.Search__input {
+  border: none;
+  box-shadow: 0px 8px 30px rgba(57, 57, 57, 0.15);
+  border-radius: 4px;
+  font-family: "Circular";
+  word-spacing: -4px;
+}
+
+.Search__submit {
+  border-radius: 4px;
+  letter-spacing: 0.505em;
+  font-family: "Circular";
+  font-weight: 900;
+  background: linear-gradient(90deg, #F46F6F 0%, #FF9473 100%);
+}
+
+.Search__spinner {
+  display: block;
+  margin: 0 auto;
+  margin-top: 2%;
+}
