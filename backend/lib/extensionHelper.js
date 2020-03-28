@@ -83,43 +83,52 @@ async function getDirLanguages (targetPath) {
   // return new Set(fileList.map(file2Lang))
 }
 
-async function concatByLanguage (targetPath, saveToFs = true) {
+async function concatByLanguage (targetPath, useFs = true) {
   const dirName = path.join(targetPath, '___lang_jihwan')
   await mkdirp(dirName)
-  // TODO: check if dir already exists
-  const langStrs = {}
-  const langCurrentIdxs = {}
-  const langStoredIdxs = {}
-  await findFilesWithIgnore(targetPath, async (file) => {
-    const fileLang = file2Lang(file)
-    if (fileLang === null) return null
-    const fileContents = await fs.readFile(file, 'utf8')
-    // Slow, but we can fix later (hopefully)
-    const numLines = fileContents.split('\n').length
-    if (fileLang in langStrs) {
-      langStrs[fileLang] += fileContents
-      langCurrentIdxs[fileLang] += numLines
-      langStoredIdxs[fileLang].push({
-        pos: langCurrentIdxs[fileLang],
-        path: fileLang
-      })
-    } else {
-      langStrs[fileLang] = fileContents
-      langCurrentIdxs[fileLang] = numLines
-      langStoredIdxs[fileLang] = [{
-        pos: numLines,
-        path: fileLang
-      }]
-    }
-  }, true)
-  if (saveToFs) {
-    for (let langName in langStrs) {
+  try {
+    const index = JSON.parse(await fs.readFile(path.join(dirName, 'index-json')))
+    const langStrs = {}
+    for (const langName in index) {
       const cleanLangName = langName.split(' ').join('_')
-      await fs.writeFile(path.join(dirName, cleanLangName), langStrs[langName])
+      langStrs[langName] = await fs.readFile(path.join(dirName, cleanLangName), 'utf8')
     }
-    fs.writeFile(path.join(dirName, 'index-json'), JSON.stringify(langStoredIdxs))
+    return [langStrs, index]
+  } catch (err) {
+    const langStrs = {}
+    const langCurrentIdxs = {}
+    const langStoredIdxs = {}
+    await findFilesWithIgnore(targetPath, async (file) => {
+      const fileLang = file2Lang(file)
+      if (fileLang === null) return null
+      const fileContents = await fs.readFile(file, 'utf8')
+      // Slow, but we can fix later (hopefully)
+      const numLines = fileContents.split('\n').length
+      if (fileLang in langStrs) {
+        langStrs[fileLang] += fileContents
+        langCurrentIdxs[fileLang] += numLines
+        langStoredIdxs[fileLang].push({
+          pos: langCurrentIdxs[fileLang],
+          path: fileLang
+        })
+      } else {
+        langStrs[fileLang] = fileContents
+        langCurrentIdxs[fileLang] = numLines
+        langStoredIdxs[fileLang] = [{
+          pos: numLines,
+          path: fileLang
+        }]
+      }
+    }, true)
+    if (useFs) {
+      for (const langName in langStrs) {
+        const cleanLangName = langName.split(' ').join('_')
+        await fs.writeFile(path.join(dirName, cleanLangName), langStrs[langName])
+      }
+      fs.writeFile(path.join(dirName, 'index-json'), JSON.stringify(langStoredIdxs))
+    }
+    return [langStrs, langStoredIdxs] 
   }
-  return [langStrs, langStoredIdxs]
 }
 
 module.exports = { ext2Lang, file2Lang, getDirLanguages, findFiles, findFilesWithIgnore, concatByLanguage }
