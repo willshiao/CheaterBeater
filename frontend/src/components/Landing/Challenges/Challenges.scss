@@ -1,0 +1,30 @@
+@import '../../../shared/variables.scss';
+
+.Challenges {
+  margin-top: 8%;
+}
+
+.Challenges__image {
+  display: block;
+  margin: 0 auto;
+  width: 75%;
+}
+
+.Challenges__wrapper {
+  background-color: $secondary-color;
+  font-family: "Circular";
+  padding: 40px 64px;
+  padding-right: 84px;
+  border-radius: 32px;
+  margin-right: -6%;
+}
+
+.Challenges__title {
+  font-weight: 900;
+  font-size: 48px;
+}
+
+.Challenges__desc {
+  word-spacing: -4px;
+  color: white;
+}
