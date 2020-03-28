@@ -102,9 +102,9 @@ const myTreeData = [
 class Graph extends Component {
   render(){
     return(
-      <div className="Graph__container">
+      <div className="container-fluid Graph__container">
       <h1 className="Graph__header">Similar Projects</h1>
-        <div className="Graph__tree-container">
+        <div className="row Graph__tree-container">
           <Tree
             data={myTreeData}
             zoomable={false}
