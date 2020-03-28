@@ -9,7 +9,7 @@ class Cblocks extends Component {
     codeList: [
       {
         fileName: "index.js",
-        text: "function sayHi(){\n alert(\"Hello World\"); \nsayHi() \nlet x = \"bye\"}",
+        text: "\nfunction sayHi(){\n alert(\"Hello World\"); \nsayHi() \nlet x = \"bye\"}",
         language: "javascript",
         highlight: "2"
       },
