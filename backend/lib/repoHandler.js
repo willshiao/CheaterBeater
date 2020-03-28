@@ -58,6 +58,7 @@ async function hashFile (filename) {
 async function getHashes (repoPath) {
   const hashToFile = {}
   await findFiles(repoPath, async (filePath) => {
+    // console.log('Hashing:', filePath)
     const fileHash = await hashFile(filePath)
     hashToFile[fileHash] = filePath
   }, true)
