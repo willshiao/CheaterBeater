@@ -1,32 +1,28 @@
 import React, { Component } from 'react';
 import { Button } from 'antd';
 import { Link } from 'react-router-dom';
-import logo from '../../assets/imgs/logo.svg';
-import { CodeBlock, dracula } from 'react-code-blocks';
-import Cblocks from './Cblocks/Cblocks';
-import Guage from './Guage/Guage';
+import logo from '../../assets/imgs/cb-logo.svg';
+import Info from './Info/Info';
 import './Results.scss';
 
 class Results extends Component {
-  render(){
+  render() {
+    const { data } = this.props.location.state;
+
     return(
-      <div>
-        <div className="Results__parent">
+      <section className="Results">
+        <div className="container-fluid">
           <div className="Results__header">
             <div className="Results__logo-container">
               <img className="Results__logo-styling" alt="Cheater Beater" src={logo}></img>
-              <p className="Results__heading">Cheater Beater</p>
             </div>
             <Link to="/">
               <Button className="Results__button">BACK</Button>
             </Link>
           </div>
-          <div>
-            <Guage />
-          </div>
-          <Cblocks data={this.props.location.state}/>
-         </div>
-      </div>
+          <Info data={data} />
+        </div>
+      </section>
     )
   }
 }

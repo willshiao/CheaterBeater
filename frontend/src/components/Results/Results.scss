@@ -1,8 +1,8 @@
 @import '../../shared/variables.scss';
 
-.Results__parent {
-  width: 100vw;
-  height: 100%;
+.Results {
+  font-family: "Circular";
+  word-spacing: -4px;
 }
 
 .Results__logo-container {
@@ -10,7 +10,7 @@
 }
 
 .Results__logo-styling {
-  width: 20px;
+  width: 20%;
   padding-top: 5px;
   float: left;
 }

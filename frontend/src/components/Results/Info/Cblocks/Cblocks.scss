@@ -1,8 +1,6 @@
-@import '../../../shared/variables.scss';
+@import '../../../../shared/variables.scss';
 
 .Cblocks__container {
-  width: 100vw;
-  height: 100%;
   padding-left: 20%;
   padding-right: 20%;
 }
@@ -15,17 +13,17 @@
 .Cblocks__block-container {
   padding-top: 4%;
   display: block;
+  margin: 0 auto;
 }
 
 .Cblocks__header {
   text-align: center;
-  font-weight: 750;
   font-size: 28px;
 }
 
 .Cblocks__subHeader {
   font-size: 24px;
-  font-weight: 700;
+  font-weight: 900;
   margin: 0;
 }
 

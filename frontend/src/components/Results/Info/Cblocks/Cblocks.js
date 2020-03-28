@@ -37,11 +37,11 @@ class Cblocks extends Component {
                   <div className="row Cblocks__block-container">
                     <p className="Cblocks__fileName">{blocks.fileName}</p>
                     <CodeBlock
-                        text={blocks.text}
-                        language={blocks.language}
-                        highlight={blocks.highlight}
-                        showLineNumbers={true}
-                        theme={atomOneDark}
+                      text={blocks.text}
+                      language={blocks.language}
+                      highlight={blocks.highlight}
+                      showLineNumbers={true}
+                      theme={atomOneDark}
                     />
                     <p className="Cblocks__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vel lectus eget dui sagittis rutrum. Curabitur sed elit sed mi imperdiet tempus. Aliquam commodo aliquet arcu, eget consequat enim aliquam non. Vestibulum posuere, arcu eu egestas vehicula, metus erat sollicitudin neque, id sodales justo tortor sed orci.</p>
                   </div>

@@ -1,0 +1,23 @@
+@import '../../../../shared/variables.scss';
+
+.SafeMessage {
+  margin-top: 8%;
+  margin-bottom: 4%;
+}
+
+.SafeMessage__messageContainer {
+  margin-top: 4%;
+  font-family: "Circular";
+  word-spacing: -4px;
+}
+
+.SafeMessage__image {
+  display: block;
+  width: 75%;
+  margin: 0 auto;
+}
+
+.SafeMessage__title {
+  font-weight: 900;
+  color: $dark-color;
+}

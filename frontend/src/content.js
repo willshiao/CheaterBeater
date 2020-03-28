@@ -22,6 +22,14 @@ const content = {
   },
   footer: {
     description: "Made with 🐍 at LA Hacks 2020"
+  },
+  results: {
+    info: {
+      safeMessage: {
+        title: "You passed!",
+        description: "Great job, it looks like your project passed our test! What does this mean? We tried looking through your past projects and your team members' past projects, and didn't find anything suspicious. Thanks for not being a fraud... haha... unless..."
+      }
+    }
   }
 };
 
