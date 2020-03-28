@@ -9,6 +9,9 @@ class Search extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
+
+    const devpostUrl = e.target.devpostUrl.value;
+    alert("Got url", devpostUrl);
   }
 
   render() {

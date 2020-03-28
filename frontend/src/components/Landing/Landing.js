@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import './Landing.css';
-import { Button } from 'antd';
+import './Landing.scss';
+import Search from './Search/Search';
 
 class Landing extends Component {
   render() {
     return (
       <div className="Landing">
-        HI IM LANDING
-        <Button type="primary">Search</Button>
+        <Search />
       </div>
     )
   }
