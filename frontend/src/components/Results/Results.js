@@ -4,12 +4,11 @@ import { Link } from 'react-router-dom';
 import logo from '../../assets/imgs/logo.svg';
 import { CodeBlock, dracula } from 'react-code-blocks';
 import Cblocks from './Cblocks/Cblocks';
+import Guage from './Guage/Guage';
 import './Results.scss';
 
 class Results extends Component {
   render(){
-    console.log("Got data: ", this.props.location.state);
-
     return(
       <div>
         <div className="Results__parent">
@@ -18,11 +17,14 @@ class Results extends Component {
               <img className="Results__logo-styling" alt="Cheater Beater" src={logo}></img>
               <p className="Results__heading">Cheater Beater</p>
             </div>
-            <Button className="Results__button">
-              <Link to="/">BACK</Link>
-            </Button>
+            <Link to="/">
+              <Button className="Results__button">BACK</Button>
+            </Link>
           </div>
-          <Cblocks />
+          <div>
+            <Guage />
+          </div>
+          <Cblocks data={this.props.location.state}/>
          </div>
       </div>
     )
