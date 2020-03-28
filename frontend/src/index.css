@@ -11,3 +11,20 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+@font-face {
+  font-family: "Circular";
+  src: url("./assets/fonts/lineto-circular-pro-book.ttf");
+}
+
+@font-face {
+  font-family: "Circular";
+  src: url("./assets/fonts/lineto-circular-pro-bold.ttf");
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "Circular";
+  src: url("./assets/fonts/lineto-circular-black.ttf");
+  font-weight: 900;
+}

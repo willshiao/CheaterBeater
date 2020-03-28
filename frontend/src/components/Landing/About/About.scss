@@ -1,0 +1,29 @@
+@import '../../../shared/variables.scss';
+
+.About__wrapper {
+  background-color: $primary-color;
+  padding: 40px 64px;
+  border-radius: 30px;
+  margin-left: -32px;
+}
+
+.About__title {
+  text-align: right;
+  font-family: "Circular";
+  color: $dark-color;
+  font-weight: 900;
+  letter-spacing: -1px;
+}
+
+.About__desc {
+  font-family: "Circular";
+  word-spacing: -4px;
+  margin-left: 8%;
+  color: white;
+}
+
+.About__image {
+  width: 75%;
+  display: block;
+  margin: 0 auto;
+}
