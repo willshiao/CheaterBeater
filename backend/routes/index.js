@@ -4,11 +4,14 @@ const router = require('express').Router()
 
 const Promise = require('bluebird')
 const bodyParser = require('body-parser')
-router.use(bodyParser.json())
-
 const cheerio = require('cheerio')
 const axios = require('axios')
+
 const { AsyncHandler } = require('../lib/errorHandlers.js')
+const { getDirLanguages } = require('../lib/extensionHelper.js')
+const { cloneRepo, getHashes } = require('../lib/repoHandler.js')
+
+router.use(bodyParser.json())
 
 function union (setA, setB) {
   const _union = new Set(setA)
@@ -22,7 +25,7 @@ function getGithubFromDevpost ($) {
   const firstGithubLink = $('span:contains("github.com")').parent().attr('href')
   // In case the last one doesn't work
   const altGithubLink = $('span:contains("GitHub Repo")').parent().attr('href')
-  return (firstGithubLink || altGithubLink) + '.git'
+  return (firstGithubLink || altGithubLink)
 }
 
 router.get('/test', (req, res) => {
@@ -89,18 +92,35 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
       if (ghLink === undefined) console.log('Page:', page)
       return ghLink
     })
-    .filter(el => el !== 'undefined.git')
+    .filter(el => el !== undefined)
   // Add original link
   filteredGittyLinks.push(githubLink)
 
   // console.log(githubAllProjectLinks)
   //  githubAllProjectLinks
   console.log(filteredGittyLinks)
+  // clone all repos
+  const repoLocations = (await Promise
+    .map(filteredGittyLinks, async (gLink) => {
+      return [gLink, await cloneRepo(gLink)]
+    }, { concurrency: 1 }))
+    .filter(x => x[1])
 
+  const dirLanguages = {}
+  await Promise.map(repoLocations, async (pair) => {
+    console.log(pair)
+    dirLanguages[pair[0]] = await getDirLanguages(pair[1])
+  }, { concurrency: 1 })
+  console.log(dirLanguages)
+  
   // handle success
   // parse response data
   // now parse response to get the following:
   // 1. get github repo if it exists
+  // 2. get all members of the projects and their devposts
+  // 3. get all the projects of those members
+
+  return res.successJson({ page: data.data })
   // 2. get all members of the projects and their devposts
   // 3. get all the projects of those members
 
