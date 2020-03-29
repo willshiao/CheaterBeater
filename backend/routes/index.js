@@ -9,7 +9,7 @@ const axios = require('axios')
 const cors = require('cors')
 
 const { AsyncHandler } = require('../lib/errorHandlers.js')
-const { compareWithMatches, continousMatches, getDirLanguages, findFilesWithIgnore, file2Lang } = require('../lib/extensionHelper.js')
+const { compareWithMatches, continousMatches, getDirLanguages, findFilesWithIgnore, file2Lang, concatByLanguage } = require('../lib/extensionHelper.js')
 const { cloneRepo, getHashes } = require('../lib/repoHandler.js')
 
 router.use(bodyParser.json())
@@ -157,7 +157,7 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
   await Promise.map(repoLocations, async ([gLink, repoDir]) => {
     if (gLink === githubLink) return null
     hashes[gLink] = await getHashes(repoDir)
-    for (let mainHash in mainHashes) {
+    for (const mainHash in mainHashes) {
       if (mainHash in hashes[gLink]) {
         const mainFile = mainHashes[mainHash]
         const matchedFile = hashes[gLink][mainHash]
@@ -173,8 +173,9 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
     }
   }, { concurrency: 1 })
   console.log(hashes)
-  console.log('Matches:', matches);
-  
+  console.log('Matches:', matches)
+
+  await Promise.map(repoLocations, async ([__, x]) => concatByLanguage(x), { concurrency: 1 })
   // handle success
   // parse response data
   // now parse response to get the following:
