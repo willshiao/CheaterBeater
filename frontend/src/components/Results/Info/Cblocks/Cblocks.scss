@@ -1,30 +1,11 @@
 @import '../../../../shared/variables.scss';
 
-.Cblocks__container {
-  padding-left: 20%;
-  padding-right: 20%;
-}
-
-.Cblocks__header-container {
-  display: block;
-  width: 100%;
-}
-
-.Cblocks__block-container {
-  padding-top: 4%;
-  display: block;
-  margin: 0 auto;
-}
-
-.Cblocks__header {
-  text-align: center;
-  font-size: 28px;
+.Cblocks {
+  margin-top: 4%;
 }
 
 .Cblocks__subHeader {
-  font-size: 24px;
   font-weight: 900;
-  margin: 0;
 }
 
 .Cblocks__fileName {
