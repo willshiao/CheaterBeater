@@ -179,7 +179,10 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
   }, { concurrency: 1 })
   for (const matchPath in matches) {
     matchedList.push({
-      filePath: matchPath.replace(config.get('repoDir'), ''),
+      filePath: matchPath
+        .split(/(\/|\\\\)/)
+        .slice(2)
+        .join('/'), // for cosmetic purposes only, don't have to use Windows/Linux seps
       sameAs: matches[matchPath]
     })
   }
