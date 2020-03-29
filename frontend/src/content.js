@@ -12,7 +12,7 @@ const content = {
     firstSubtitle: "Enter a URL",
     secondSubtitle: "Analyze the Data",
     thirdSubtitle: "Make a Decision",
-    firstDescription: "Enter a URL of the devpost submission",
+    firstDescription: "Enter a URL of the devpost submission. Click \"GO\" once you're ready",
     secondDescription: "Take a look at the report you received. We look at the user's previous devpost submissions, along with the devpost submissions of the people they worked with. We look through all of this code and show you where the code is the same.",
     thirdDescription: "Computers are not people! Based on the information provided by our app, take a closer look at the hackathon submission.",
   },

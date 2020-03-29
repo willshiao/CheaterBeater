@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { CodeBlock, atomOneDark } from 'react-code-blocks'
+import { CodeBlock, androidstudio } from 'react-code-blocks'
 import './Cblocks.scss'
 import { codeData } from '../../../../mocks';
 
@@ -22,14 +22,25 @@ class Cblocks extends Component {
                 return (
                   <div className="col-8 Cblocks__block-container">
                     <p className="Cblocks__fileName">{filePath}</p>
-                    {code.map(({ block }) => (
+                    {code.map(({ block, plagiarismLinks }) => (
                       <div className="Cblocks__block">
-                        <CodeBlock
-                          text={block}
-                          language={language}
-                          showLineNumbers={false}
-                          theme={atomOneDark}
-                        />
+                        <div className="row justify-content-center">
+                          <div className="col-9">
+                            <CodeBlock
+                              text={block}
+                              language={language}
+                              showLineNumbers={false}
+                              theme={androidstudio}
+                            />
+                          </div>
+                          <div className="col-3">
+                            <div className="Cblocks__links">
+                              <ul>
+                                {plagiarismLinks.map(link => <li className="Cblocks__link">{link}</li>)}
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     ))}
                   </div>

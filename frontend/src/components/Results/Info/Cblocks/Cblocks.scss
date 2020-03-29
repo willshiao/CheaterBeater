@@ -29,3 +29,32 @@ span {
 .Cblocks__block {
   margin-bottom: 2%;
 }
+
+.Cblocks__links {
+  border-radius: 8px;
+  padding-top: 16px;
+  padding-bottom: 8px;
+  padding-left: -8px;
+  transition: 0.3s;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.Cblocks__link {
+  font-weight: 700;
+  color: $dark-color;
+}
+
+ul {
+  list-style: none;
+}
+
+ul li::before {
+  content: "\2022";
+  color: $primary-color;
+  font-weight: bold;
+  display: inline-block;
+  margin-left: -1.5em;
+  margin-right: 1em;
+  width: 4px;
+  font-size: 16px;
+}
