@@ -12,20 +12,16 @@ class Results extends Component {
 
     return(
       <section className="Results">
-        <div className="container-fluid">
-          <div className="Results___inner">
-            <div className="Results__header">
-              <div className="Results__logo-container">
-                <img className="Results__logo-styling" alt="Cheater Beater" src={logo}></img>
-              </div>
-              <Link to="/">
-                <Button className="Results__button">BACK</Button>
-              </Link>
-            </div>
-            <Info data={data} />
-            <Footer />
+        <div className="Results__header">
+          <div className="Results__logo-container">
+            <img className="Results__logo-styling" alt="Cheater Beater" src={logo}></img>
           </div>
+          <Link to="/">
+            <Button className="Results__button">BACK</Button>
+          </Link>
         </div>
+        <Info data={data} />
+        <Footer />
       </section>
     )
   }
