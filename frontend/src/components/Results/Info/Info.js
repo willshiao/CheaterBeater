@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './Info.scss';
 import Gauge from './Gauge/Gauge';
 import BarGraph from './BarGraph/BarGraph';
+import ExactMatches from './ExactMatches/ExactMatches';
 import Graph from './Graph/Graph';
 import Cblocks from './Cblocks/Cblocks';
 import SafeMessage from './SafeMessage/SafeMessage';
@@ -30,7 +31,7 @@ class Info extends Component {
             <div className="col-10">
               <div className="row">
                 <div className="col Info__chart-container">
-                  <Gauge cheaterScore={(totalStats.cheaterScore)? totalStats.cheaterScore : 0} />
+                  <Gauge cheaterScore={totalStats.cheaterScore} />
                   <BarGraph
                     percentageFileMatches={percentageFileMatches}
                     percentageLineMatches={percentageLineMatches}
@@ -46,6 +47,7 @@ class Info extends Component {
               </div>
             </div>
           </div>
+          {data.matchedList && data.matchedList.length > 0 && <ExactMatches matchedList={data.matchedList} />}
           {data && data.partialMatches && data.partialMatches.length > 0 && <Cblocks codeBlocks={data.partialMatches} />}
           {data && <Graph treeData={{teamMembers: data.teamMembers, projectName: data.projectName}} />}
         </div>
