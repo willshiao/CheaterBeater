@@ -156,6 +156,7 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
   const hashes = {}
   const mainHashes = await getHashes(mainRepoLocation)
   const matches = {}
+  const matchedList = []
   await Promise.map(repoLocations, async ([gLink, repoDir]) => {
     if (gLink === githubLink) return null
     hashes[gLink] = await getHashes(repoDir)
@@ -166,14 +167,21 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
         console.log('Found match with: ', matchedFile)
         // Same file
         if (mainFile === matchedFile) continue
+        const matchedLink = repoPathToLink(gLink, matchedFile)
         if (mainFile in matches) {
-          matches[mainFile].push(matchedFile)
+          matches[mainFile].push(matchedLink)
         } else {
-          matches[mainFile] = [matchedFile]
+          matches[mainFile] = [matchedLink]
         }
       }
     }
   }, { concurrency: 1 })
+  for (const matchPath in matches) {
+    matchedList.push({
+      filePath: repoPathToLink(githubLink, matchPath),
+      sameAs: matches[matchPath]
+    })
+  }
   console.log(hashes)
   console.log('Matches:', matches)
 
@@ -236,11 +244,17 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
     // console.log('Cont:', continousMatches(output))
     // console.log('Output:', output)
   }, true)
-  const totalStats = { totalChecked, totalSame, totalFilesChecked }
+  const totalStats = {
+    totalChecked,
+    totalSame,
+    totalFilesChecked,
+    totalFilesSame: matchedList.length,
+    cheaterScore: Math.min((totalSame / totalChecked) / 0.5 + (matchedList.length / totalFilesChecked) / 0.25, 1)
+  }
 
   return res.successJson({
     teamMembers: teamMemberList,
-    matches,
+    matchedList,
     projectName,
     partialMatches: overallOutput,
     totalStats
