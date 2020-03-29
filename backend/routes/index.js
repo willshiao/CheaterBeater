@@ -32,6 +32,19 @@ function getGithubFromDevpost ($) {
   return (firstGithubLink || altGithubLink)
 }
 
+async function getWebpage (url) {
+  const useRedis = config.get('redisEnabled')
+  if (useRedis) {
+    const stored = await redis.hgetAsync('webReq', url)
+    if (stored !== null) return stored
+  }
+  const result = (await axios.get(url)).data
+  if (useRedis) {
+    await redis.hmsetAsync('webReq', url, result)
+  }
+  return result
+}
+
 router.get('/test', (req, res) => {
   res.send('OK')
 })
@@ -62,18 +75,7 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
   const connectedProjects = [] // github link of all connected projects
   // get the rest of this user's projects
 
-  const userPages = await Promise.map(Array.from(teamMembers), async link => {
-    if (useRedis) {
-      const stored = await redis.hgetAsync('userPage', link)
-      if (stored !== null) return stored
-    }
-    const result = (await axios.get(link)).data
-    if (useRedis) {
-      await redis.hmsetAsync('userPage', link, result)
-    }
-    return result
-  }, { concurrency: 2 })
-
+  const userPages = await Promise.map(Array.from(teamMembers), getWebpage, { concurrency: 2 })
   const members = []
   const userProjectNamesAgg = []
   // get devpost of each project except original link
@@ -116,9 +118,7 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
   // const githubList = []
   // const githubAllProjectLinks = []
 
-  const githubList = await Promise.map(Array.from(uniqueProjs), async link => {
-    return (await axios.get(link)).data
-  }, { concurrency: 2 })
+  const githubList = await Promise.map(Array.from(uniqueProjs), getWebpage, { concurrency: 2 })
 
   const filteredGittyLinks = githubList
     .map((page) => {
