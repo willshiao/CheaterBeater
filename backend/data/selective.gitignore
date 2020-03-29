@@ -408,3 +408,5 @@ dist
 site-packages
 .idea
 .vscode
+.gitignore
+LICENSE
