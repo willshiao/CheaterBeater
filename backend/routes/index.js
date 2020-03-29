@@ -220,10 +220,10 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
     totalChecked += linesChecked
     totalSame += linesSame
 
-    if (blocks.length === 0) return null
     const code = blocks.filter(b => {
       return b.blockLines > 3 // ignore single-line copies
     })
+    if (code.length === 0) return null
     overallOutput.push({
       code,
       filePath: repoPathToLink(githubLink, filename),
