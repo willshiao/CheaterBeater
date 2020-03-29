@@ -44,6 +44,7 @@ function shouldSkip (dirName) {
 async function findFiles (filePath, fileCb, fullPath = false) {
   const files = await fs.readdir(filePath, { withFileTypes: true })
   await Promise.map(files, async (file) => {
+    if (file.isSymbolicLink()) return null
     if (file.isDirectory()) {
       if (shouldSkip(file.name)) return null
       return findFiles(path.join(filePath, file.name), fileCb, fullPath)
@@ -60,6 +61,7 @@ async function findFiles (filePath, fileCb, fullPath = false) {
 async function findFilesWithIgnore (filePath, fileCb, fullPath = false) {
   const files = await fs.readdir(filePath, { withFileTypes: true })
   await Promise.map(files, async (file) => {
+    if (file.isSymbolicLink()) return null
     const longPath = path.join(filePath, file.name)
     if (gitignore.denies(file.name) || file.name.includes(REPR_DIR)) return null
     if (file.isDirectory()) {
