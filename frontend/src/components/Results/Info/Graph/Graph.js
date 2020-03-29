@@ -5,76 +5,49 @@ import './Graph.scss';
 const svgParent = {
   shape: 'circle',
   shapeProps: {
-    r: 10,
+    r: 6,
     fill: '#F46F6F',
   }
 }
 
-const myTreeData = [
-  {
-    name: 'Toor',
-    children: [
-      {
-        name: 'Aditya Acharya',
-        children: [
-          {
-            name: 'Toor',
-          },
-        ]
-      },
-      {
-        name: 'Eric Ong',
-        children: [
-          {
-            name: 'Toor 10%'
-          },
-          {
-            name: 'Skancare 20%'
-          },
-          {
-            name: 'Carpuul',
-          },
-          {
-            name: 'o',
-          },
-          {
-            name: 's',
-          }
-        ]
-      },
-      {
-        name: 'John Shin',
-        children: [
-          {
-            name: 'Toor',
-          },
-          {
-            name: 'Skancare',
-          },
-          {
-            name: 'Carpuul',
-          },
-          {
-            name: 'o',
-          },
-          {
-            name: 's',
-          }
-        ]
-      },
-      {
-        name: 'Jihwan Kim'
-      }
-    ],
-  },
-];
+function format(treeData) {
+  console.log("Got props", treeData);
+  console.log("Got title", treeData.projectName);
 
+  let temp = [];
+  let members = treeData.teamMembers;
+  for (let i = 0; i < members.length; ++i){
+    let projects = [];
+    for (let j = 0; j < members[i].projects.length; ++j){
+      if (j == 4){
+        break;
+      }
+      projects.push({
+        'name': members[i].projects[j]
+      });
+    }
+    temp.push({
+      'name': members[i].name,
+      'children': projects
+    });
+  }
+
+  console.log("this is temp", temp);
+
+
+  const testTreeData = [{
+    'name': treeData.projectName,
+    'children': temp
+  }];
+
+  return testTreeData;
+}
 
 class Graph extends Component {
-  render(){
-    const { treeData } = this.props;
-    console.log("Got props", treeData);
 
+  render(){
+    const testTreeData = format(this.props.treeData)
+    console.log("state", testTreeData)
     return(
       <div className="container-fluid Graph__container">
         <div className="row justify-content-center">
@@ -84,7 +57,7 @@ class Graph extends Component {
         </div>
         <div className="row Graph__tree-container">
           <Tree
-            data={myTreeData}
+            data={testTreeData}
             zoomable={false}
             orientation={'vertical'}
             nodeSvgShape={svgParent}
@@ -97,7 +70,7 @@ class Graph extends Component {
             scaleExtent={
               {
                 min: 0.1,
-                max: 0.7
+                max: 0.51
               }
             }
           />

@@ -31,11 +31,11 @@ const content = {
         thirdLabel: "Label 3"
       },
       safeMessage: {
-        title: "You passed!",
-        description: "Great job, it looks like your project passed our test! What does this mean? We tried looking through your past projects and your team members' past projects, and didn't find anything suspicious. Thanks for not being a fraud... haha... unless..."
+        title: "Success!",
+        description: "Great job, it looks like the project passed our test! What does this mean? We tried looking through the hacker's past projects and the hacker's team members' past projects, and didn't find anything suspicious. This hacker might be a fraud... haha... unless..."
       },
       fraudMessage: {
-        title: "You failed!",
+        title: "Uh oh!",
         description: "Umm... something doesn't seem right with this project. You might want to look thoroughly through it to see if there's anything suspicious. To help you out, we've some provided information below, such as where code was plagiarized and other projects related to this one."
       }
     }

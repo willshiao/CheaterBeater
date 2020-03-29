@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './Info.scss';
-import { Button } from 'antd';
 import Gauge from './Gauge/Gauge';
 import BarGraph from './BarGraph/BarGraph';
 import Graph from './Graph/Graph';
@@ -32,10 +31,8 @@ class Info extends Component {
               </div>
             </div>
           </div>
-          {data &&
-            <Cblocks data={data} /> &&
-            <Graph treeData={{teamMembers: data.teamMembers, projectName: data.projectName}} />
-          }
+          {data && <Cblocks codeBlocks={data.partialMatches} />}
+          {data && <Graph treeData={{teamMembers: data.teamMembers, projectName: data.projectName}} />}
         </div>
       </section>
     )
