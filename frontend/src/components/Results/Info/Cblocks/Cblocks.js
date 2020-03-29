@@ -30,7 +30,7 @@ class Cblocks extends Component {
                     {code.map(({ block, plagiarismLinks }) => (
                       <div className="Cblocks__block">
                         <div className="row justify-content-center">
-                          <div className="col-8">
+                          <div className="col-8" style={{fontFamily: 'Courier Prime'}}>
                             <CodeBlock
                               text={block}
                               language={language.toLowerCase()}
