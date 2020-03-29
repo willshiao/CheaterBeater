@@ -244,7 +244,12 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
     // console.log('Cont:', continousMatches(output))
     // console.log('Output:', output)
   }, true)
-  const totalStats = { totalChecked, totalSame, totalFilesChecked }
+  const totalStats = {
+    totalChecked,
+    totalSame,
+    totalFilesChecked,
+    totalFilesSame: matchedList.length
+  }
 
   return res.successJson({
     teamMembers: teamMemberList,
