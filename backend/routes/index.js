@@ -6,12 +6,14 @@ const Promise = require('bluebird')
 const bodyParser = require('body-parser')
 const cheerio = require('cheerio')
 const axios = require('axios')
+const cors = require('cors')
 
 const { AsyncHandler } = require('../lib/errorHandlers.js')
 const { getDirLanguages } = require('../lib/extensionHelper.js')
 const { cloneRepo, getHashes } = require('../lib/repoHandler.js')
 
 router.use(bodyParser.json())
+router.use(cors())
 
 function union (setA, setB) {
   const _union = new Set(setA)
@@ -45,6 +47,9 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
   if (githubLink === undefined) {
     return res.failMsg('Missing GitHub link')
   }
+  // get project name
+  const projectName = $('#app-title').text()
+  console.log("project name", projectName)
 
   const teamMembers = new Set(Array.from($('#app-team .user-profile-link'))
     .map(el => $(el).attr('href')))
@@ -189,10 +194,12 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
     })
   }
   console.log(teamMemberList)
+  console.log("project name", projectName)
 
   return res.successJson({
     teamMembers: teamMemberList,
-    matches
+    matches,
+    projectName
   })
   // 2. get all members of the projects and their devposts
   // 3. get all the projects of those members
