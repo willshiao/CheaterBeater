@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './Search.scss';
 import content from '../../../content';
-import { Input, Button, Form } from 'antd';
+import { Input, Button, Form, Alert } from 'antd';
 import { Redirect } from 'react-router-dom';
 import { BASE_URL } from '../../../shared/constants';
 import axios from 'axios';
@@ -14,7 +14,8 @@ const { Item } = Form;
 class Search extends Component {
   state = {
     data: null,
-    isLoading: false
+    isLoading: false,
+    errorMessage: ""
   }
 
   handleFinish = values => {
@@ -28,11 +29,19 @@ class Search extends Component {
       })
         .then(response => {
           console.log("GOT RESPONSE FROM POST REQUEST", response);
-          const { status, data: { data } } = response;
+          const { data: { data, status, message } } = response;
           
-          if (status !== 200) Promise.reject();
+          if (status === "fail") {
+            Promise.reject();
+            this.setState({ errorMessage: message });
+          } else {
+            this.setState({
+              data,
+              errorMessage: ""
+            });
+          };
 
-          this.setState({ data, isLoading: false });
+          this.setState({ isLoading: false });
         })
         .catch(error => {
           console.error(error);
@@ -42,8 +51,12 @@ class Search extends Component {
 
   }
 
+  handleErrorMessageClose = e => {
+    this.setState({ errorMessage: "" });
+  }
+
   render() {
-    const { data, isLoading } = this.state;
+    const { data, isLoading, errorMessage } = this.state;
 
     if (data) {
       return (
@@ -85,6 +98,19 @@ class Search extends Component {
           </Form>
           <div className="Search__loading">
             {isLoading && <img src={spinner} alt="Loading..." className="Search__spinner"/>}
+            {errorMessage && !isLoading &&
+              <div className="row justify-content-center">
+                <div className="col-4">
+                  <Alert
+                    className="Search__alert"
+                    message={errorMessage}
+                    type="warning"
+                    closable
+                    onClose={this.handleErrorMessageClose}
+                  />
+                </div>
+              </div>
+            }
           </div>
         </div>
       </section>

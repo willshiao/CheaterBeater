@@ -27,7 +27,7 @@
   letter-spacing: 0.505em;
   font-family: "Circular";
   font-weight: 900;
-  background: linear-gradient(90deg, #F46F6F 0%, #FF9473 100%);
+  background: linear-gradient(90deg, $primary-color 0%, $secondary-color 100%);
 }
 
 .Search__loading {
@@ -38,4 +38,15 @@
   display: block;
   margin: 0 auto;
   padding-top: 4%;
+}
+
+.Search__alert {
+  margin-top: 4%;
+}
+
+.ant-alert-message {
+  // font-weight: bold;
+  font-family: "Circular";
+  color: $dark-color;
+  margin: 0 auto;
 }
