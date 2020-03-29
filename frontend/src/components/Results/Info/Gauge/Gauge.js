@@ -16,7 +16,7 @@ class Gauge extends Component {
             percent={roundedScore}
             hideText={true}
           />
-          <h2 className="Gauge__header">CB score: <span style={{color: '#F46F6F'}}>{roundedScore * 100}%</span></h2>
+          <h2 className="Gauge__header">CB score: <span style={{color: '#F46F6F'}}>{roundedScore * 100}</span></h2>
         </div>
       </div>
     )
