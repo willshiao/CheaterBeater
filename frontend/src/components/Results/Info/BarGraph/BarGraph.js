@@ -11,7 +11,7 @@ class BarGraph extends Component {
     const { percentageFileMatches, percentageLineMatches } = this.props;
 
     return(
-      <div>
+      <section className="BarGraph">
         <p className="BarGraph__label">{barGraph.lineMatches}</p>
         <Progress
           className="BarGraph__bar"
@@ -26,7 +26,7 @@ class BarGraph extends Component {
           percent={percentageFileMatches}
           status="active"
         />
-      </div>
+      </section>
     )
   }
 }

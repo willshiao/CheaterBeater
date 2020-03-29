@@ -6,10 +6,15 @@
   font-family: "Circular";
 }
 
+.BarGraph {
+  margin-top: 32px;
+}
+
 .BarGraph__label {
   margin-bottom: -12px;
   color: $dark-color;
   font-weight: 700;
+  margin-top: 16px;
 }
 
 .BarGraph__bar {
