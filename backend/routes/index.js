@@ -179,8 +179,10 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
   }, { concurrency: 1 })
   for (const matchPath in matches) {
     matchedList.push({
-      filePath: matchPath
-        .split(/(\/|\\\\)/)
+      filePath: matchPath // there are cleaner ways...
+        .split('\\\\')
+        .join('/')
+        .split('/')
         .slice(2)
         .join('/'), // for cosmetic purposes only, don't have to use Windows/Linux seps
       sameAs: matches[matchPath]
