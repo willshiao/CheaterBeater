@@ -14,7 +14,9 @@
   font-family: circular;
   color: #2F2E41;
   font-weight: 900;
+  -webkit-transition: color 0.5s
 }
 
-.Nav__items {
+.Nav__text:hover {
+  color: rgba(47,46,65, 0.75)
 }

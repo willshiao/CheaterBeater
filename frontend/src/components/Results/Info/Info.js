@@ -30,7 +30,7 @@ class Info extends Component {
             </div>
           </div>
           <Cblocks data={data} />
-          {/*<Graph /> */}
+          {!data && <Graph /> }
         </div>
       </section>
     )

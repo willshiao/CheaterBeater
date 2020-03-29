@@ -13,9 +13,15 @@ class Landing extends Component {
       <div className="Landing">
         <Nav />
         <Search />
-        <About />
-        <How />
-        <Challenges />
+        <div id="About">
+          <About />
+        </div>
+        <div id="How">
+          <How />
+        </div>
+        <div id="Challenges">
+          <Challenges />
+        </div>
         <Footer />
       </div>
     )

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link, animateScroll as scroll } from "react-scroll";
 import './Nav.scss';
 import cbLogo from '../../../assets/imgs/cb-logo.svg';
 import {
@@ -27,17 +28,44 @@ const Example = (props) => {
           <Nav className="mr-auto" navbar>
             <NavItem>
               <NavLink className="Nav__link" href="/">
-                <p className="Nav__text">About</p>
+                <Link
+                  activeClass="active"
+                  to="About"
+                  spy={true}
+                  smooth={true}
+                  offset={-70}
+                  duration={500}
+                >
+                  <p className="Nav__text">About</p>
+                </Link>
               </NavLink>
             </NavItem>
             <NavItem>
               <NavLink className="Nav__link" href="/">
-                <p className="Nav__text">How it Works</p>
+                <Link
+                  activeClass="active"
+                  to="How"
+                  spy={true}
+                  smooth={true}
+                  offset={-70}
+                  duration={500}
+                >
+                  <p className="Nav__text">How it Works</p>
+                </Link>
               </NavLink>
             </NavItem>
             <NavItem>
               <NavLink className="Nav__link" href="/">
-                <p className="Nav__text">Challenges</p>
+                <Link
+                  activeClass="active"
+                  to="Challenges"
+                  spy={true}
+                  smooth={true}
+                  offset={-70}
+                  duration={500}
+                >
+                  <p className="Nav__text">Challenges</p>
+                </Link>
               </NavLink>
             </NavItem>
           </Nav>
