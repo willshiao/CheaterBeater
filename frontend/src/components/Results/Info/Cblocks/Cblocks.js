@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { CodeBlock, androidstudio } from 'react-code-blocks'
 import './Cblocks.scss'
+import EllipsisText from "react-ellipsis-text";
 // import { codeData } from '../../../../mocks';
 
 class Cblocks extends Component {
@@ -27,7 +28,7 @@ class Cblocks extends Component {
                     {code.map(({ block, plagiarismLinks }) => (
                       <div className="Cblocks__block">
                         <div className="row justify-content-center">
-                          <div className="col-9">
+                          <div className="col-8">
                             <CodeBlock
                               text={block}
                               language={language.toLowerCase()}
@@ -35,10 +36,17 @@ class Cblocks extends Component {
                               theme={androidstudio}
                             />
                           </div>
-                          <div className="col-3">
+                          <div className="col-4">
                             <div className="Cblocks__links">
                               <ul className="Cblocks__list">
-                                {plagiarismLinks && plagiarismLinks.length > 0 && plagiarismLinks.map(link => <li className="Cblocks__link">{link}</li>)}
+                                {plagiarismLinks
+                                  && plagiarismLinks.length > 0
+                                  && plagiarismLinks.map(link => (
+                                    <li className="Cblocks__link">
+                                      <EllipsisText text={link} length={"30"} />
+                                    </li>
+                                  )
+                                )}
                               </ul>
                             </div>
                           </div>

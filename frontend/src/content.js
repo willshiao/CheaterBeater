@@ -26,9 +26,8 @@ const content = {
   results: {
     info: {
       barGraph: {
-        firstLabel: "Label 1",
-        secondLabel: "Label 2",
-        thirdLabel: "Label 3"
+        firstLabel: "% of file matches",
+        secondLabel: "% of line matches"
       },
       safeMessage: {
         title: "Success!",

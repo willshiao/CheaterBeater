@@ -12,14 +12,22 @@ class Info extends Component {
     const { data } = this.props;
 
     return (
-      <section className="Info" id="printMe">
+      <section className="Info">
         <div className="container-fluid">
+          <div className="row justify-content-center">
+            <div className="col-10">
+              <h2 className="Info__projectName">{data.projectName}</h2>
+            </div>
+          </div>
           <div className="row justify-content-center Info__top">
             <div className="col-10">
               <div className="row">
                 <div className="col Info__chart-container">
                   <Gauge />
-                  <BarGraph />
+                  <BarGraph
+                    percentageFileMatches={data.percentageFileMatches}
+                    percentageLineMatches={data.percentageLineMatches}
+                  />
                 </div>
                 <div className="col">
                   {data ? (

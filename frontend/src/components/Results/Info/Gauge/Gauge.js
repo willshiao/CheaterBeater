@@ -14,7 +14,7 @@ class Gauge extends Component {
             percent={0.37}
             hideText={true}
           />
-          <h1 className="Gauge__header">CB score: <span style={{color: '#F46F6F'}}>37%</span></h1>
+          <h2 className="Gauge__header">CB score: <span style={{color: '#F46F6F'}}>37%</span></h2>
         </div>
       </div>
     )
