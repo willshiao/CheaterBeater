@@ -1,27 +1,9 @@
 import React, { Component } from 'react';
 import { CodeBlock, atomOneDark } from 'react-code-blocks'
 import './Cblocks.scss'
-
+import { codeData } from '../../../../mocks';
 
 class Cblocks extends Component {
-  state = {
-    score: "65.5",
-    codeList: [
-      {
-        fileName: "index.js",
-        text: "\nfunction sayHi(){\n alert(\"Hello World\"); \nsayHi() \nlet x = \"bye\"}",
-        language: "javascript",
-        highlight: "2"
-      },
-      {
-        fileName: "index.js",
-        text: "function sayHi(){\n alert(\"Hello World\"); \nsayHi() \nlet x = \"bye\"}",
-        language: "javascript",
-        highlight: "2"
-      }
-    ]
-  }
-
   render(){
     console.log(this.props.data);
     return(
@@ -34,18 +16,22 @@ class Cblocks extends Component {
           </div>
           <div className="row justify-content-center">
             {
-              this.state.codeList.length > 0 && this.state.codeList.map(blocks => {
-                return(
+              codeData.length > 0 && codeData.map(data => {
+                const { code, filePath, language } = data;
+
+                return (
                   <div className="col-8 Cblocks__block-container">
-                    <p className="Cblocks__fileName">{blocks.fileName}</p>
-                    <CodeBlock
-                      text={blocks.text}
-                      language={blocks.language}
-                      highlight={blocks.highlight}
-                      showLineNumbers={true}
-                      theme={atomOneDark}
-                    />
-                    <p className="Cblocks__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vel lectus eget dui sagittis rutrum. Curabitur sed elit sed mi imperdiet tempus. Aliquam commodo aliquet arcu, eget consequat enim aliquam non. Vestibulum posuere, arcu eu egestas vehicula, metus erat sollicitudin neque, id sodales justo tortor sed orci.</p>
+                    <p className="Cblocks__fileName">{filePath}</p>
+                    {code.map(({ block }) => (
+                      <div className="Cblocks__block">
+                        <CodeBlock
+                          text={block}
+                          language={language}
+                          showLineNumbers={false}
+                          theme={atomOneDark}
+                        />
+                      </div>
+                    ))}
                   </div>
                 )
               })

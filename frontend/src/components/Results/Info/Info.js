@@ -27,8 +27,8 @@ class Info extends Component {
               </div>
             </div>
           </div>
-          {/* {<Cblocks data={data} />}
-          <Graph /> */}
+          <Cblocks data={data} />
+          {/*<Graph /> */}
         </div>
       </section>
     )
