@@ -103,7 +103,11 @@ class Graph extends Component {
   render(){
     return(
       <div className="container-fluid Graph__container">
-      <h1 className="Graph__header">Similar Projects</h1>
+        <div className="row justify-content-center">
+          <div className="col-8">
+            <h2 className="Graph__header">Similar Projects</h2>
+          </div>
+        </div>
         <div className="row Graph__tree-container">
           <Tree
             data={myTreeData}
@@ -119,7 +123,7 @@ class Graph extends Component {
             scaleExtent={
               {
                 min: 0.1,
-                max: 0.7
+                max: 0.6
               }
             }
             styles={
