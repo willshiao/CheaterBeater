@@ -41,7 +41,6 @@ function shouldSkip (dirName) {
   return fileBlacklist.has(dirName) || dirName.includes(REPR_DIR)
 }
 
-
 async function findFiles (filePath, fileCb, fullPath = false) {
   const files = await fs.readdir(filePath, { withFileTypes: true })
   await Promise.map(files, async (file) => {
@@ -203,7 +202,7 @@ function continousMatches (matchArr) {
       if (buf.length > 0 && links.size > 0) {
         output.push({
           block: buf,
-          plagarismLinks: Array.from(links)
+          plagiarismLinks: Array.from(links)
         })
       }
       buf = matchArr[i].line + '\n'
@@ -216,7 +215,7 @@ function continousMatches (matchArr) {
   if (buf.length > 0 && links.size > 0) {
     output.push({
       block: buf,
-      plagarismLinks: Array.from(links)
+      plagiarismLinks: Array.from(links)
     })
   }
   return output
