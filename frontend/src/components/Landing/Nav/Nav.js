@@ -17,25 +17,33 @@ const Example = (props) => {
   const toggle = () => setIsOpen(!isOpen);
 
   return (
-    <Navbar className="Nav__bar" light expand="md">
-      <NavbarBrand href="/">
+    <div>
+      <a href="/" >
         <img src={cbLogo} alt="" className="Nav__logo"/>
-      </NavbarBrand>
-      <NavbarToggler onClick={toggle} />
-      <Collapse className="Nav__items" isOpen={isOpen} navbar>
-        <Nav className="mr-auto" navbar>
-          <NavItem>
-            <NavLink className="Nav__link" href="/">About</NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink className="Nav__link" href="/">How it Works</NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink className="Nav__link" href="/">Challenges</NavLink>
-          </NavItem>
-        </Nav>
-      </Collapse>
-    </Navbar>
+      </a>
+      <Navbar className="Nav__bar" light expand="md">
+        <NavbarToggler onClick={toggle} />
+        <Collapse className="Nav__items" isOpen={isOpen} navbar>
+          <Nav className="mr-auto" navbar>
+            <NavItem>
+              <NavLink className="Nav__link" href="/">
+                <p className="Nav__text">About</p>
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink className="Nav__link" href="/">
+                <p className="Nav__text">How it Works</p>
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink className="Nav__link" href="/">
+                <p className="Nav__text">Challenges</p>
+              </NavLink>
+            </NavItem>
+          </Nav>
+        </Collapse>
+      </Navbar>
+    </div>
   );
 }
 
