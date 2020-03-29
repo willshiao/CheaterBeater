@@ -158,7 +158,15 @@ async function diffRepos (repoPath1, repoPath2) {
   return ret
 }
 
-async function compareWithMatches (filename, mainRepo, otherRepos, langName) {
+function repoPathToLink (githubLink, repoPath) {
+  const repoName = new URL(githubLink).pathname.split('/').pop()
+  const createdPath = path.join(config.get('repoDir'), repoName)
+  return repoPath.replace(createdPath, `${githubLink}/blob/master`)
+    .split('\\\\') // in case we have Windows paths
+    .join('/')
+}
+
+async function compareWithMatches (filename, mainRepo, otherRepos, langName, path2Link) {
   console.log('Got input filename: ', filename)
   const fileContents = await fs.readFile(filename, 'utf8')
   const fileLines = fileContents
@@ -172,6 +180,7 @@ async function compareWithMatches (filename, mainRepo, otherRepos, langName) {
     }
   })
   await Promise.each(otherRepos, async (repo) => {
+    const ghLink = path2Link[repo]
     if (repo === mainRepo) return null
     const [langStr, index] = await readLangFile(repo, langName)
     const langStrLines = langStr.split('\n')
@@ -185,9 +194,10 @@ async function compareWithMatches (filename, mainRepo, otherRepos, langName) {
         if (line.bIndex + 1 < index[i].pos) break
       }
       i = Math.min(i, index.length - 1)
-      if (line.aIndex >= matches.length)
+      if (line.aIndex >= matches.length) {
         console.log(`Warning: aIndex=${line.aIndex} >= size=${matches.length}`)
-      matches[line.aIndex].otherIndexes.push(index[i].path)
+      }
+      matches[line.aIndex].otherIndexes.push(repoPathToLink(ghLink, index[i].path))
     })
   })
   return matches
@@ -227,6 +237,7 @@ module.exports = {
   continousMatches,
   diffRepos,
   ext2Lang,
+  repoPathToLink,
   file2Lang,
   findFiles,
   findFilesWithIgnore,

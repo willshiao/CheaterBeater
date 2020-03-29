@@ -10,7 +10,7 @@ const cors = require('cors')
 
 const { AsyncHandler } = require('../lib/errorHandlers.js')
 const { compareWithMatches, continousMatches, getDirLanguages, findFilesWithIgnore, file2Lang, concatByLanguage } = require('../lib/extensionHelper.js')
-const { cloneRepo, getHashes } = require('../lib/repoHandler.js')
+const { cloneRepo, getHashes, repoPathToLink } = require('../lib/repoHandler.js')
 
 router.use(bodyParser.json())
 router.use(cors())
@@ -49,7 +49,7 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
   }
   // get project name
   const projectName = $('#app-title').text()
-  console.log("project name", projectName)
+  console.log('project name', projectName)
 
   const teamMembers = new Set(Array.from($('#app-team .user-profile-link'))
     .map(el => $(el).attr('href')))
@@ -71,15 +71,15 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
     const $ = cheerio.load(userPage)
     const userProjects = new Set(Array.from($('#software-entries .link-to-software'))
       .map(el => $(el).attr('href')))
-    
+
     const userProjectNames = new Set(Array.from($('.software-entry-name.entry-body > h5'))
       .map(el => $(el).text().trim()))
-    console.log("oh shittttt", userProjectNames)
+    // console.log("oh shittttt", userProjectNames)
     userProjectNamesAgg.push(userProjectNames)
 
     const member = $('#portfolio-user-name').text().trim().split('\n')[0];
-    
-    console.log("Hewwo", member)
+
+    // console.log("Hewwo", member)
     members.push(member)
     // console.log($('#software-entries .link-to-software').attr('href'))
     // const userProjects = new Set(Array.from($('#software-entries'))
@@ -88,7 +88,7 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
     // console.log(userProjects)
     connectedProjects.push(userProjects)
     // console.log(userPage)
-    
+
     // num files copied
     // line matches
 
@@ -124,6 +124,7 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
   //  githubAllProjectLinks
   console.log(filteredGittyLinks)
   // clone all repos
+  const path2Link = {}
   let mainRepoLocation = null // location of our target repo
   const repoLocations = (await Promise
     .map(filteredGittyLinks, async (gLink) => {
@@ -131,6 +132,7 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
       if (gLink === githubLink) {
         mainRepoLocation = repoLocation
       }
+      path2Link[repoLocation] = gLink
       return [gLink, repoLocation]
     }, { concurrency: 1 }))
     .filter(x => x[1])
@@ -204,19 +206,19 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
     })
   }
   console.log(teamMemberList)
-  console.log("project name", projectName)
+  console.log('project name', projectName)
 
   const overallOutput = []
   await findFilesWithIgnore(mainRepoLocation, async (filename) => {
     const langName = file2Lang(filename)
     if (langName === null) return null
     const repos = lang2Repo[langName]
-    const output = await compareWithMatches(filename, mainRepoLocation, repos, langName)
+    const output = await compareWithMatches(filename, mainRepoLocation, repos, langName, path2Link)
     const contOutput = continousMatches(output)
     if (contOutput.length === 0) return null
     overallOutput.push({
       code: contOutput,
-      filePath: filename,
+      filePath: repoPathToLink(githubLink, filename),
       language: langName
     })
     // console.log('Cont:', continousMatches(output))

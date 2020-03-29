@@ -7,7 +7,7 @@ const config = require('config')
 const crypto = require('crypto')
 const path = require('path')
 const simpleGit = require('simple-git/promise')
-const { findFiles, findFilesWithIgnore } = require('./extensionHelper')
+const { findFiles, findFilesWithIgnore, repoPathToLink } = require('./extensionHelper')
 
 const git = simpleGit()
 const REPO_DIR = config.get('repoDir')
@@ -67,4 +67,4 @@ async function getHashes (repoPath) {
 
 // async function findLanguages()
 
-module.exports = { cloneRepo, getHashes }
+module.exports = { cloneRepo, getHashes, repoPathToLink }
