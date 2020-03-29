@@ -213,13 +213,18 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
     const langName = file2Lang(filename)
     if (langName === null) return null
     const repos = lang2Repo[langName]
-    const output = await compareWithMatches(filename, mainRepoLocation, repos, langName, path2Link)
-    const contOutput = continousMatches(output)
-    if (contOutput.length === 0) return null
+    const { matches, linesChecked } = await compareWithMatches(filename, mainRepoLocation, repos, langName, path2Link)
+    const { blocks, linesSame } = continousMatches(matches)
+    if (blocks.length === 0) return null
+    const code = blocks.filter(b => {
+      return b.blockLines > 3 // ignore single-line copies
+    })
     overallOutput.push({
-      code: contOutput,
+      code,
       filePath: repoPathToLink(githubLink, filename),
-      language: langName
+      language: langName,
+      linesChecked,
+      linesSame
     })
     // console.log('Cont:', continousMatches(output))
     // console.log('Output:', output)

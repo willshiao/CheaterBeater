@@ -109,14 +109,14 @@ async function concatByLanguage (targetPath, useFs = true) {
       // Slow, but we can fix later (hopefully)
       const numLines = fileContents.split('\n').length
       if (fileLang in langStrs) {
-        langStrs[fileLang] += fileContents
+        langStrs[fileLang] += fileContents + '\n'
         langCurrentIdxs[fileLang] += numLines
         langStoredIdxs[fileLang].push({
           pos: langCurrentIdxs[fileLang],
           path: file
         })
       } else {
-        langStrs[fileLang] = fileContents
+        langStrs[fileLang] = fileContents + '\n'
         langCurrentIdxs[fileLang] = numLines
         langStoredIdxs[fileLang] = [{
           pos: numLines,
@@ -191,7 +191,7 @@ async function compareWithMatches (filename, mainRepo, otherRepos, langName, pat
       if (line.aIndex === -1 || line.bIndex === -1) return null
       let i = 0
       for (i = 0; i < index.length; ++i) {
-        if (line.bIndex + 1 < index[i].pos) break
+        if (line.bIndex < index[i].pos) break
       }
       i = Math.min(i, index.length - 1)
       if (line.aIndex >= matches.length) {
@@ -200,24 +200,31 @@ async function compareWithMatches (filename, mainRepo, otherRepos, langName, pat
       matches[line.aIndex].otherIndexes.push(repoPathToLink(ghLink, index[i].path))
     })
   })
-  return matches
+  return { matches, linesChecked: fileLines.length }
 }
 
 function continousMatches (matchArr) {
   let buf = ''
   let links = new Set()
   const output = []
+  let linesSame = 0
+  let blockLines = 0
   for (let i = 0; i < matchArr.length; ++i) {
     if (matchArr[i].otherIndexes.length === 0) {
       if (buf.length > 0 && links.size > 0) {
         output.push({
           block: buf,
-          plagiarismLinks: Array.from(links)
+          plagiarismLinks: Array.from(links),
+          blockLines
         })
       }
-      buf = matchArr[i].line + '\n'
+      // buf = matchArr[i].line + '\n'
+      buf = ''
       links = new Set()
+      blockLines = 0
     } else {
+      linesSame++
+      blockLines++
       buf += matchArr[i].line + '\n'
       matchArr[i].otherIndexes.forEach(x => links.add(x))
     }
@@ -225,10 +232,11 @@ function continousMatches (matchArr) {
   if (buf.length > 0 && links.size > 0) {
     output.push({
       block: buf,
-      plagiarismLinks: Array.from(links)
+      plagiarismLinks: Array.from(links),
+      blockLines
     })
   }
-  return output
+  return { blocks: output, linesSame }
 }
 
 module.exports = {
