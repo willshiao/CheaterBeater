@@ -11,9 +11,15 @@ class Info extends Component {
 
     return (
       <section className="Info">
-        <Gauge />
-        {<Cblocks data={data} />}
-        <Graph />
+        <div className="container-fluid">
+          <div className="row justify-content-center">
+            <div className="col-6">
+              <Gauge />
+            </div>
+          </div>
+          {<Cblocks data={data} />}
+          <Graph />
+        </div>
       </section>
     )
   }

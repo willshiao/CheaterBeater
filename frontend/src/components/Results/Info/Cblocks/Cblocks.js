@@ -25,16 +25,18 @@ class Cblocks extends Component {
   render(){
     console.log(this.props.data);
     return(
-      <div>
-        <div className="Cblocks__parent">
-          <div className="container-fluid Cblocks__container">
-            <div className="row Cblocks__header-container">
-              <h1 className="Cblocks__subHeader">Code Plagarism</h1>
+      <section className="Cblocks">
+        <div className="container-fluid">
+          <div className="row justify-content-center Cblocks__header-container">
+            <div className="col-8">
+              <h2 className="Cblocks__subHeader">Code Plagiarism</h2>
             </div>
+          </div>
+          <div className="row justify-content-center">
             {
               this.state.codeList.length > 0 && this.state.codeList.map(blocks => {
                 return(
-                  <div className="row Cblocks__block-container">
+                  <div className="col-8 Cblocks__block-container">
                     <p className="Cblocks__fileName">{blocks.fileName}</p>
                     <CodeBlock
                       text={blocks.text}
@@ -49,8 +51,8 @@ class Cblocks extends Component {
               })
             }
           </div>
-         </div>
-      </div>
+        </div>
+      </section>
     )
   }
 }
