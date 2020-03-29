@@ -1,4 +1,17 @@
+@import '../../../../shared/variables.scss';
+
 .BarGraph__container {
   width: 75%;
   margin: auto;
+  font-family: "Circular";
+}
+
+.BarGraph__label {
+  margin-bottom: -12px;
+  color: $dark-color;
+  font-weight: 700;
+}
+
+.BarGraph__bar {
+  color: $dark-color;
 }

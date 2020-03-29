@@ -49,9 +49,9 @@ span {
 }
 
 .Cblocks__list li::before {
-  content: "\2022";
+  content: "\003E";
   color: $primary-color;
-  font-weight: bold;
+  font-weight: 900;
   display: inline-block;
   margin-left: -1.5em;
   margin-right: 1em;

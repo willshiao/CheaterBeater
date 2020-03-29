@@ -25,13 +25,18 @@ const content = {
   },
   results: {
     info: {
+      barGraph: {
+        firstLabel: "Label 1",
+        secondLabel: "Label 2",
+        thirdLabel: "Label 3"
+      },
       safeMessage: {
         title: "You passed!",
         description: "Great job, it looks like your project passed our test! What does this mean? We tried looking through your past projects and your team members' past projects, and didn't find anything suspicious. Thanks for not being a fraud... haha... unless..."
       },
       fraudMessage: {
         title: "You failed!",
-        description: "Umm... something doesn't seem right with this project. You might want to look thoroughly through it to see if there's anything suspicious. To help you out, we've provided information below, such as where the code was seen and other similar projects."
+        description: "Umm... something doesn't seem right with this project. You might want to look thoroughly through it to see if there's anything suspicious. To help you out, we've some provided information below, such as where code was plagiarized and other projects related to this one."
       }
     }
   }
