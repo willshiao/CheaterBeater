@@ -26,7 +26,7 @@ class Info extends Component {
                   <Gauge />
                   <BarGraph
                     percentageFileMatches={data.percentageFileMatches}
-                    percentageLineMatches={data.percentageLineMatches}
+                    percentageLineMatches={Math.round((data.totalStats.totalSame / data.totalStats.totalChecked) * 100)}
                   />
                 </div>
                 <div className="col">
