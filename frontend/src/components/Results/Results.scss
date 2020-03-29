@@ -34,13 +34,12 @@
 .Results__button {
   float: right;
   margin-right: 7%;
-  border-radius: 10px;
-  letter-spacing: 3px;
+  border-radius: 4px;
+  letter-spacing: 0.505em;
+  font-family: "Circular";
+  font-weight: 900;
   background: linear-gradient(90deg, #F46F6F 0%, #FF9473 100%);
-  color: white;
-  font-weight: 700;
-  opacity: 1.0;
-  -webkit-transition: opacity 0.5s;
+  color: white; 
 }
 
 .Results__button:hover {

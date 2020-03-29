@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import GaugeChart from 'react-gauge-chart';
 import './Gauge.scss';
-import cbImage from '../../../../assets/imgs/cb-4.svg';
 
 class Gauge extends Component {
   render(){

@@ -54,13 +54,15 @@ class Search extends Component {
               <div className="col-4">
                 <Item name="devpostUrl">
                   <Input
+                    size="large"
                     className="Search__input"
                     placeholder="Enter Devpost url"
                   />
                 </Item>
               </div>
-              <div className="col-2">
+              <div className="col-1">
                 <Button
+                  size="large"
                   type="primary"
                   htmlType="submit"
                   className="Search__submit"
