@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import logo from '../../assets/imgs/cb-logo.svg';
 import Info from './Info/Info';
 import './Results.scss';
+import Footer from '../Footer/Footer';
 
 class Results extends Component {
   render() {
@@ -22,6 +23,7 @@ class Results extends Component {
               </Link>
             </div>
             <Info data={data} />
+            <Footer />
           </div>
         </div>
       </section>

@@ -5,7 +5,7 @@ import Search from './Search/Search';
 import About from './About/About';
 import How from './How/How';
 import Challenges from './Challenges/Challenges';
-import Footer from './Footer/Footer';
+import Footer from '../Footer/Footer';
 
 class Landing extends Component {
   render() {

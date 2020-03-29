@@ -1,6 +1,6 @@
 import React from 'react';
 import './Footer.scss';
-import content from '../../../content';
+import content from '../../content';
 
 const { footer } = content;
 

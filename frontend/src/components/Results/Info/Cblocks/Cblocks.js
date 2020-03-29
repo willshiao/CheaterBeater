@@ -35,7 +35,7 @@ class Cblocks extends Component {
                           </div>
                           <div className="col-3">
                             <div className="Cblocks__links">
-                              <ul>
+                              <ul className="Cblocks__list">
                                 {plagiarismLinks.map(link => <li className="Cblocks__link">{link}</li>)}
                               </ul>
                             </div>

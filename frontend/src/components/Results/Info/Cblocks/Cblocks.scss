@@ -44,11 +44,11 @@ span {
   color: $dark-color;
 }
 
-ul {
+.Cblocks__list {
   list-style: none;
 }
 
-ul li::before {
+.Cblocks__list li::before {
   content: "\2022";
   color: $primary-color;
   font-weight: bold;
