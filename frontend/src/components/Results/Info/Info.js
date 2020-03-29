@@ -10,6 +10,12 @@ import FraudMessage from './FraudMessage/FraudMessage';
 class Info extends Component {
   render() {
     const { data } = this.props;
+    const { totalStats } = data;
+
+    const percentageLineMatches = Math.round((totalStats.totalSame / totalStats.totalChecked) * 100);
+    const percentageFileMatches = Math.round((totalStats.totalFilesSame / totalStats.totalFilesChecked) * 100);
+    console.log("Calculated percentageLineMatches", percentageLineMatches);
+    console.log("Calculated percentageFileMatches", percentageFileMatches);
 
     return (
       <section className="Info">
@@ -23,10 +29,10 @@ class Info extends Component {
             <div className="col-10">
               <div className="row">
                 <div className="col Info__chart-container">
-                  <Gauge />
+                  <Gauge cheaterScore={totalStats.cheaterScore} />
                   <BarGraph
-                    percentageFileMatches={data.percentageFileMatches}
-                    percentageLineMatches={Math.round((data.totalStats.totalSame / data.totalStats.totalChecked) * 100)}
+                    percentageFileMatches={percentageFileMatches}
+                    percentageLineMatches={percentageLineMatches}
                   />
                 </div>
                 <div className="col">
@@ -39,7 +45,7 @@ class Info extends Component {
               </div>
             </div>
           </div>
-          {data && <Cblocks codeBlocks={data.partialMatches} />}
+          {data && data.partialMatches && data.partialMatches.length > 0 && <Cblocks codeBlocks={data.partialMatches} />}
           {data && <Graph treeData={{teamMembers: data.teamMembers, projectName: data.projectName}} />}
         </div>
       </section>

@@ -4,6 +4,8 @@ import './Gauge.scss';
 
 class Gauge extends Component {
   render(){
+    const roundedScore = this.props.cheaterScore.toFixed(2);
+
     return(
       <div className="Gauge__container">
         <div className="Gauge__inner-container">
@@ -11,10 +13,10 @@ class Gauge extends Component {
             nrOfLevels={10}
             colors={["#F46F6F", "#FFC371"]}
             arcWidth={0.5}
-            percent={0.37}
+            percent={roundedScore}
             hideText={true}
           />
-          <h2 className="Gauge__header">CB score: <span style={{color: '#F46F6F'}}>37%</span></h2>
+          <h2 className="Gauge__header">CB score: <span style={{color: '#F46F6F'}}>{roundedScore * 100}%</span></h2>
         </div>
       </div>
     )

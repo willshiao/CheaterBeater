@@ -23,7 +23,7 @@ class BarGraph extends Component {
         <Progress
           className="BarGraph__bar"
           strokeColor={{'0%': '#FF9473', '100%': '#FF9473'}}
-          percent={23}
+          percent={percentageFileMatches}
           status="active"
         />
       </div>

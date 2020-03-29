@@ -1,3 +1,3 @@
-const BASE_URL = "http://f818637c.ngrok.io";
+const BASE_URL = "https://cb-api.wls.ai";
 
 export { BASE_URL };
