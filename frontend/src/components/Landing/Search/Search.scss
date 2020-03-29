@@ -1,7 +1,7 @@
 @import '../../../shared/variables.scss';
 
 .Search {
-  margin-top: 8%;
+  margin-top: 10%;
   margin-bottom: 8%;
 }
 
@@ -30,8 +30,12 @@
   background: linear-gradient(90deg, #F46F6F 0%, #FF9473 100%);
 }
 
+.Search__loading {
+  height: 196px;
+}
+
 .Search__spinner {
   display: block;
   margin: 0 auto;
-  margin-top: 2%;
+  margin-top: 6%;
 }

@@ -8,7 +8,7 @@ class Gauge extends Component {
       <div className="Gauge__container">
         <div className="Gauge__inner-container">
           <GaugeChart id="gauge-chart3"
-            nrOfLevels={30}
+            nrOfLevels={10}
             colors={["#F46F6F", "#FFC371"]}
             arcWidth={0.5}
             percent={0.37}

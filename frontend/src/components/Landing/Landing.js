@@ -5,7 +5,7 @@ import Search from './Search/Search';
 import About from './About/About';
 import How from './How/How';
 import Challenges from './Challenges/Challenges';
-import Footer from './Footer/Footer';
+import Footer from '../Footer/Footer';
 
 class Landing extends Component {
   render() {
@@ -13,9 +13,15 @@ class Landing extends Component {
       <div className="Landing">
         <Nav />
         <Search />
-        <About />
-        <How />
-        <Challenges />
+        <div id="About">
+          <About />
+        </div>
+        <div id="How">
+          <How />
+        </div>
+        <div id="Challenges">
+          <Challenges />
+        </div>
         <Footer />
       </div>
     )

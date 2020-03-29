@@ -12,7 +12,7 @@ const content = {
     firstSubtitle: "Enter a URL",
     secondSubtitle: "Analyze the Data",
     thirdSubtitle: "Make a Decision",
-    firstDescription: "Enter a URL of the devpost submission",
+    firstDescription: "Enter a URL of the devpost submission. Click \"GO\" once you're ready",
     secondDescription: "Take a look at the report you received. We look at the user's previous devpost submissions, along with the devpost submissions of the people they worked with. We look through all of this code and show you where the code is the same.",
     thirdDescription: "Computers are not people! Based on the information provided by our app, take a closer look at the hackathon submission.",
   },
@@ -25,13 +25,18 @@ const content = {
   },
   results: {
     info: {
+      barGraph: {
+        firstLabel: "Label 1",
+        secondLabel: "Label 2",
+        thirdLabel: "Label 3"
+      },
       safeMessage: {
         title: "You passed!",
         description: "Great job, it looks like your project passed our test! What does this mean? We tried looking through your past projects and your team members' past projects, and didn't find anything suspicious. Thanks for not being a fraud... haha... unless..."
       },
       fraudMessage: {
         title: "You failed!",
-        description: "Umm... something doesn't seem right with this project. You might want to look thoroughly through it to see if there's anything suspicious. To help you out, we've provided information below, such as where the code was seen and other similar projects."
+        description: "Umm... something doesn't seem right with this project. You might want to look thoroughly through it to see if there's anything suspicious. To help you out, we've some provided information below, such as where code was plagiarized and other projects related to this one."
       }
     }
   }

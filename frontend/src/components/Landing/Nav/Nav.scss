@@ -1,13 +1,22 @@
 .Nav__bar {
   padding-top: 2%;
   background-color: white;
+  float: right;
 }
 
 .Nav__logo {
   width: 128px;
   margin-left: 4%;
+  padding-top: 2.3%;
 }
 
-.Nav__items {
-  text-align: right;
+.Nav__text {
+  font-family: circular;
+  color: #2F2E41;
+  font-weight: 900;
+  -webkit-transition: color 0.5s
+}
+
+.Nav__text:hover {
+  color: rgba(47,46,65, 0.75)
 }

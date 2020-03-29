@@ -10,14 +10,6 @@ const svgParent = {
   }
 }
 
-const svgChild = {
-  shape: 'circle',
-  shapeProps: {
-    r: 10,
-    fill: '#ffbfab',
-  }
-}
-
 const myTreeData = [
   {
     name: 'Toor',
@@ -27,7 +19,6 @@ const myTreeData = [
         children: [
           {
             name: 'Toor',
-            nodeSvgShape: svgChild
           },
         ]
       },
@@ -35,34 +26,19 @@ const myTreeData = [
         name: 'Eric Ong',
         children: [
           {
-            name: 'Toor',
-            nodeSvgShape: svgChild,
-            children: [
-              {
-                name: '10%'
-              }
-            ]
+            name: 'Toor 10%'
           },
           {
-            name: 'Skancare',
-            nodeSvgShape: svgChild,
-            children: [
-              {
-                name: '20%'
-              }
-            ]
+            name: 'Skancare 20%'
           },
           {
             name: 'Carpuul',
-            nodeSvgShape: svgChild
           },
           {
             name: 'o',
-            nodeSvgShape: svgChild
           },
           {
             name: 's',
-            nodeSvgShape: svgChild
           }
         ]
       },
@@ -71,23 +47,18 @@ const myTreeData = [
         children: [
           {
             name: 'Toor',
-            nodeSvgShape: svgChild
           },
           {
             name: 'Skancare',
-            nodeSvgShape: svgChild
           },
           {
             name: 'Carpuul',
-            nodeSvgShape: svgChild
           },
           {
             name: 'o',
-            nodeSvgShape: svgChild
           },
           {
             name: 's',
-            nodeSvgShape: svgChild
           }
         ]
       },
@@ -123,16 +94,7 @@ class Graph extends Component {
             scaleExtent={
               {
                 min: 0.1,
-                max: 0.6
-              }
-            }
-            styles={
-              {
-                nodes: {
-                  name: {
-                    color: 'red'
-                  }
-                }
+                max: 0.7
               }
             }
           />

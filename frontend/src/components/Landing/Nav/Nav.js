@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link, animateScroll as scroll } from "react-scroll";
 import './Nav.scss';
 import cbLogo from '../../../assets/imgs/cb-logo.svg';
 import {
@@ -17,25 +18,60 @@ const Example = (props) => {
   const toggle = () => setIsOpen(!isOpen);
 
   return (
-    <Navbar className="Nav__bar" light expand="md">
-      <NavbarBrand href="/">
+    <div>
+      <a href="/" >
         <img src={cbLogo} alt="" className="Nav__logo"/>
-      </NavbarBrand>
-      <NavbarToggler onClick={toggle} />
-      <Collapse className="Nav__items" isOpen={isOpen} navbar>
-        <Nav className="mr-auto" navbar>
-          <NavItem>
-            <NavLink className="Nav__link" href="/">About</NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink className="Nav__link" href="/">How it Works</NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink className="Nav__link" href="/">Challenges</NavLink>
-          </NavItem>
-        </Nav>
-      </Collapse>
-    </Navbar>
+      </a>
+      <Navbar className="Nav__bar" light expand="md">
+        <NavbarToggler onClick={toggle} />
+        <Collapse className="Nav__items" isOpen={isOpen} navbar>
+          <Nav className="mr-auto" navbar>
+            <NavItem>
+              <NavLink className="Nav__link" href="/">
+                <Link
+                  activeClass="active"
+                  to="About"
+                  spy={true}
+                  smooth={true}
+                  offset={-70}
+                  duration={500}
+                >
+                  <p className="Nav__text">About</p>
+                </Link>
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink className="Nav__link" href="/">
+                <Link
+                  activeClass="active"
+                  to="How"
+                  spy={true}
+                  smooth={true}
+                  offset={-70}
+                  duration={500}
+                >
+                  <p className="Nav__text">How it Works</p>
+                </Link>
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink className="Nav__link" href="/">
+                <Link
+                  activeClass="active"
+                  to="Challenges"
+                  spy={true}
+                  smooth={true}
+                  offset={-70}
+                  duration={500}
+                >
+                  <p className="Nav__text">Challenges</p>
+                </Link>
+              </NavLink>
+            </NavItem>
+          </Nav>
+        </Collapse>
+      </Navbar>
+    </div>
   );
 }
 
