@@ -164,8 +164,8 @@ function repoPathToLink (githubLink, repoPath) {
   const repoName = new URL(githubLink).pathname.split('/').pop()
   const createdPath = path.join(config.get('repoDir'), repoName)
   return repoPath.replace(createdPath, `${githubLink}/blob/master`)
-    .split('\\\\') // in case we have Windows paths
-    .join('/')
+  .split('\\\\') // in case we have Windows paths
+  .join('/')
 }
 
 async function compareWithMatches (filename, mainRepo, otherRepos, langName, path2Link) {
