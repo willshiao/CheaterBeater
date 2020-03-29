@@ -38,6 +38,7 @@ async function cloneRepo (repoUrl, cacheRepos = true) {
       await git.clone(`${repoUrl}.git`, repoPath)
     } catch (err) {
       if (err.message.includes('not found')) return null
+      if (err.message.includes('could not read Username')) return null
       throw err
     }
   }
