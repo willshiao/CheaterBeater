@@ -21,7 +21,7 @@ const content = {
     description: "From scraping to hashing, the breadth and scope of our project introduced many challenges. It was especially challenging to to efficiently compare the code of the repository while ensuring transparency and fairness in the evaluation of a project. We also found it difficult to scrape Devpost and determine what information was required and where inside the webpage it was located."
   },
   footer: {
-    description: "Made with 🐍 at LA Hacks 2020"
+    description: "Made with 🔨 at LA Hacks 2020"
   },
   results: {
     info: {
