@@ -9,6 +9,8 @@ const config = require('config')
 const languageMap = require('language-map')
 const parser = require('gitignore-parser')
 
+const { patienceDiff, patienceDiffPlus } = require('./ext/patienceDiff')
+
 // Reverse the map, we want extension => language
 const revMap = {}
 const languageBlacklist = new Set(config.get('languageBlacklist'))
@@ -127,8 +129,21 @@ async function concatByLanguage (targetPath, useFs = true) {
       }
       fs.writeFile(path.join(dirName, 'index-json'), JSON.stringify(langStoredIdxs))
     }
-    return [langStrs, langStoredIdxs] 
+    return [langStrs, langStoredIdxs]
   }
 }
 
-module.exports = { ext2Lang, file2Lang, getDirLanguages, findFiles, findFilesWithIgnore, concatByLanguage }
+async function diffRepos (repoPath1, repoPath2) {
+  const [langStrs1, langStoredIdxs1] = await concatByLanguage(repoPath1)
+  const [langStrs2, langStoredIdxs2] = await concatByLanguage(repoPath2)
+  const langs1 = new Set(Object.keys(langStoredIdxs1))
+  const sharedLangs = Object.keys(langStoredIdxs2)
+    .filter(x => langs1.has(x))
+  const ret = {}
+  sharedLangs.forEach(sharedLang => {
+    ret[sharedLang] = patienceDiffPlus(langStrs1[sharedLang].split('\n'), langStrs2[sharedLang].split('\n'))
+  })
+  return ret
+}
+
+module.exports = { ext2Lang, file2Lang, getDirLanguages, findFiles, findFilesWithIgnore, concatByLanguage, diffRepos }
