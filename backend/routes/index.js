@@ -159,7 +159,7 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
     }
   }, { concurrency: 1 })
   console.log(hashes)
-  console.log('Matches:', matches)
+  console.log('Matches:', matches);
   
   // handle success
   // parse response data
@@ -174,18 +174,26 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
   // var data = {
   //       "team-members": [
   //          "team-member1":{
-  //             "projects"😞"project1":"50%","project2":"70%","project3":"10%"]
+  //             "projects" : ["project1":"50%","project2":"70%","project3":"10%"]
   //          }
   //          "team-member2":{
-  //             "projects"😞"project1":"50%","project2":"70%","project3":"10%"]
+  //             "projects" : ["project1":"50%","project2":"70%","project3":"10%"]
   //          }
   //       ]
   //    }
+  const teamMemberList = []
+  for (let i = 0; i < members.length; ++i) {
+    teamMemberList.push({
+      name: members[i],
+      projects: Array.from(userProjectNamesAgg[i])
+    })
+  }
+  console.log(teamMemberList)
 
-  // "team-member" is github username
-  // "project" is project name
-  
-  return res.successJson(matches)
+  return res.successJson({
+    teamMembers: teamMemberList,
+    matches
+  })
   // 2. get all members of the projects and their devposts
   // 3. get all the projects of those members
   // hi ji hwan
@@ -198,6 +206,21 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
 // }))
 // }))
 // }))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
