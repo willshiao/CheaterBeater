@@ -9,6 +9,7 @@ const config = require('config')
 const axios = require('axios')
 const cors = require('cors')
 
+const redis = require('../lib/redis')
 const { AsyncHandler } = require('../lib/errorHandlers.js')
 const { compareWithMatches, continousMatches, getDirLanguages, findFilesWithIgnore, file2Lang, concatByLanguage } = require('../lib/extensionHelper.js')
 const { cloneRepo, getHashes, repoPathToLink } = require('../lib/repoHandler.js')
@@ -36,6 +37,7 @@ router.get('/test', (req, res) => {
 })
 
 router.post('/devpost', AsyncHandler(async (req, res) => {
+  const useRedis = config.get('redisEnabled')
   const link = req.body.link
   // call cheerio
   console.log(link)
@@ -61,7 +63,15 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
   // get the rest of this user's projects
 
   const userPages = await Promise.map(Array.from(teamMembers), async link => {
-    return (await axios.get(link)).data
+    if (useRedis) {
+      const stored = await redis.hgetAsync('userPage', link)
+      if (stored !== null) return stored
+    }
+    const result = (await axios.get(link)).data
+    if (useRedis) {
+      await redis.hmsetAsync('userPage', link, result)
+    }
+    return result
   }, { concurrency: 2 })
 
   const members = []

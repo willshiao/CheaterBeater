@@ -16,5 +16,10 @@ module.exports = {
   // and collisions don't really matter
   hashAlgorithm: 'md5',
   repoDir: './repos',
-  langDir: '___lang_jihwan'
+  langDir: '___lang_jihwan',
+  redisOptions: {
+    host: '127.0.0.1',
+    port: 6379
+  },
+  redisEnabled: false
 }
