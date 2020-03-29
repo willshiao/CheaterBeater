@@ -9,6 +9,7 @@ const config = require('config')
 const axios = require('axios')
 const cors = require('cors')
 
+const redis = require('../lib/redis')
 const { AsyncHandler } = require('../lib/errorHandlers.js')
 const { compareWithMatches, continousMatches, getDirLanguages, findFilesWithIgnore, file2Lang, concatByLanguage } = require('../lib/extensionHelper.js')
 const { cloneRepo, getHashes, repoPathToLink } = require('../lib/repoHandler.js')
@@ -31,11 +32,25 @@ function getGithubFromDevpost ($) {
   return (firstGithubLink || altGithubLink)
 }
 
+async function getWebpage (url) {
+  const useRedis = config.get('redisEnabled')
+  if (useRedis) {
+    const stored = await redis.hgetAsync('webReq', url)
+    if (stored !== null) return stored
+  }
+  const result = (await axios.get(url)).data
+  if (useRedis) {
+    await redis.hmsetAsync('webReq', url, result)
+  }
+  return result
+}
+
 router.get('/test', (req, res) => {
   res.send('OK')
 })
 
 router.post('/devpost', AsyncHandler(async (req, res) => {
+  const useRedis = config.get('redisEnabled')
   const link = req.body.link
   // call cheerio
   console.log(link)
@@ -60,10 +75,7 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
   const connectedProjects = [] // github link of all connected projects
   // get the rest of this user's projects
 
-  const userPages = await Promise.map(Array.from(teamMembers), async link => {
-    return (await axios.get(link)).data
-  }, { concurrency: 2 })
-
+  const userPages = await Promise.map(Array.from(teamMembers), getWebpage, { concurrency: 2 })
   const members = []
   const userProjectNamesAgg = []
   // get devpost of each project except original link
@@ -106,9 +118,7 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
   // const githubList = []
   // const githubAllProjectLinks = []
 
-  const githubList = await Promise.map(Array.from(uniqueProjs), async link => {
-    return (await axios.get(link)).data
-  }, { concurrency: 2 })
+  const githubList = await Promise.map(Array.from(uniqueProjs), getWebpage, { concurrency: 2 })
 
   const filteredGittyLinks = githubList
     .map((page) => {
@@ -179,8 +189,10 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
   }, { concurrency: 1 })
   for (const matchPath in matches) {
     matchedList.push({
-      filePath: matchPath
-        .split(/(\/|\\\\)/)
+      filePath: matchPath // there are cleaner ways...
+        .split('\\\\')
+        .join('/')
+        .split('/')
         .slice(2)
         .join('/'), // for cosmetic purposes only, don't have to use Windows/Linux seps
       sameAs: matches[matchPath]
