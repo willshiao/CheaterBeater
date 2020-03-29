@@ -1,15 +1,25 @@
 .Gauge__container {
-  margin-top: 8%;
+  margin-top: 4%;
   width: 100%;
+  margin-bottom: 4%;
 }
 
 .Gauge__inner-container {
   width: 40%;
   margin: auto;
+  background-color: white;
+  padding-top: 4%;
+  padding-bottom: 4%;
+  box-shadow: 0px 4px 50px rgba(163, 163, 163, 0.16);
+  border-radius: 32px;
 }
 
 .Gauge__header {
   text-align: center;
   font-size: 26px;
   font-weight: 900;
+}
+
+.Gauge__image {
+  width: 50%;
 }
