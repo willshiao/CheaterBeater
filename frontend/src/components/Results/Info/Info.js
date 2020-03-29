@@ -30,7 +30,7 @@ class Info extends Component {
             <div className="col-10">
               <div className="row">
                 <div className="col Info__chart-container">
-                  <Gauge cheaterScore={totalStats.cheaterScore} />
+                  <Gauge cheaterScore={(totalStats.cheaterScore)? totalStats.cheaterScore : 0} />
                   <BarGraph
                     percentageFileMatches={percentageFileMatches}
                     percentageLineMatches={percentageLineMatches}
