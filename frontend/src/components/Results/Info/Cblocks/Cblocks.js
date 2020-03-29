@@ -43,7 +43,9 @@ class Cblocks extends Component {
                                   && plagiarismLinks.length > 0
                                   && plagiarismLinks.map(link => (
                                     <li className="Cblocks__link">
-                                      <EllipsisText text={link} length={"30"} />
+                                      <a href={link} className="Cblocks__href" target="_blank">
+                                        <EllipsisText text={link} length={"30"} />
+                                      </a>
                                     </li>
                                   )
                                 )}
