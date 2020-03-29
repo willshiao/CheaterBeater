@@ -1,0 +1,34 @@
+@import '../../../../shared/variables.scss';
+
+.ExactMatches {
+  margin-top: 6%;
+}
+
+.ant-collapse-arrow {
+  margin-right: 4px;
+}
+
+.ExactMatches__title {
+  font-weight: 900;
+  font-family: "Circular";
+}
+
+.ExactMatches__link, .ExactMatches__href {
+  font-weight: 700;
+  color: $dark-color;
+}
+
+.ExactMatches__list {
+  list-style: none;
+}
+
+.ExactMatches__list li::before {
+  content: "\2022";
+  color: $primary-color;
+  font-weight: 900;
+  display: inline-block;
+  margin-left: -1.5em;
+  margin-right: 1em;
+  width: 4px;
+  font-size: 16px;
+}
