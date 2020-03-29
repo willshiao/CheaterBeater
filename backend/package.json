@@ -21,6 +21,7 @@
     "bluebird": "^3.7.2",
     "cheerio": "^1.0.0-rc.3",
     "config": "^3.3.1",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "gitignore-parser": "0.0.2",
     "language-map": "^1.4.0",

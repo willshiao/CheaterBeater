@@ -36,9 +36,11 @@ function file2Lang (filePath) {
   return ext2Lang(path.extname(filePath))
 }
 
+const REPR_DIR = '___lang_jihwan'
 function shouldSkip (dirName) {
-  return fileBlacklist.has(dirName)
+  return fileBlacklist.has(dirName) || dirName.includes(REPR_DIR)
 }
+
 
 async function findFiles (filePath, fileCb, fullPath = false) {
   const files = await fs.readdir(filePath, { withFileTypes: true })
@@ -60,7 +62,7 @@ async function findFilesWithIgnore (filePath, fileCb, fullPath = false) {
   const files = await fs.readdir(filePath, { withFileTypes: true })
   await Promise.map(files, async (file) => {
     const longPath = path.join(filePath, file.name)
-    if (gitignore.denies(file.name)) return null
+    if (gitignore.denies(file.name) || file.name.includes(REPR_DIR)) return null
     if (file.isDirectory()) {
       return findFiles(longPath, fileCb, fullPath)
     } else { // Is file
@@ -86,7 +88,7 @@ async function getDirLanguages (targetPath) {
 }
 
 async function concatByLanguage (targetPath, useFs = true) {
-  const dirName = path.join(targetPath, '___lang_jihwan')
+  const dirName = path.join(targetPath, REPR_DIR)
   await mkdirp(dirName)
   try {
     const index = JSON.parse(await fs.readFile(path.join(dirName, 'index-json')))
@@ -111,14 +113,14 @@ async function concatByLanguage (targetPath, useFs = true) {
         langCurrentIdxs[fileLang] += numLines
         langStoredIdxs[fileLang].push({
           pos: langCurrentIdxs[fileLang],
-          path: fileLang
+          path: file
         })
       } else {
         langStrs[fileLang] = fileContents
         langCurrentIdxs[fileLang] = numLines
         langStoredIdxs[fileLang] = [{
           pos: numLines,
-          path: fileLang
+          path: file
         }]
       }
     }, true)
@@ -131,6 +133,16 @@ async function concatByLanguage (targetPath, useFs = true) {
     }
     return [langStrs, langStoredIdxs]
   }
+}
+
+async function readLangFile (targetRepo, targetLang) {
+  const dirName = path.join(targetRepo, REPR_DIR)
+  console.log('Reading from', dirName)
+  const index = JSON.parse(await fs.readFile(path.join(dirName, 'index-json')))
+  const cleanLangName = targetLang.split(' ').join('_')
+  console.log('Reading from', path.join(dirName, cleanLangName))
+  const langStr = await fs.readFile(path.join(dirName, cleanLangName), 'utf8')
+  return [langStr, index[targetLang]]
 }
 
 async function diffRepos (repoPath1, repoPath2) {
@@ -146,4 +158,71 @@ async function diffRepos (repoPath1, repoPath2) {
   return ret
 }
 
-module.exports = { ext2Lang, file2Lang, getDirLanguages, findFiles, findFilesWithIgnore, concatByLanguage, diffRepos }
+async function compareWithMatches (filename, mainRepo, otherRepos, langName) {
+  console.log('Got input filename: ', filename)
+  const fileContents = await fs.readFile(filename, 'utf8')
+  const fileLines = fileContents.split('\n')
+  const matches = fileLines.map(line => {
+    return {
+      line,
+      otherIndexes: []
+    }
+  })
+  await Promise.each(otherRepos, async (repo) => {
+    if (repo === mainRepo) return null
+    const [langStr, index] = await readLangFile(repo, langName)
+    const langStrLines = langStr.split('\n')
+    const diff = patienceDiffPlus(fileLines, langStrLines)
+    // Iterate over the diff
+    diff.lines.forEach(line => {
+      // if (line.line.includes('isZipCodeValid')) console.log('Zip code:', line)
+      if (line.aIndex === -1 || line.bIndex === -1) return null
+      let i = 0
+      for (i = 0; i < index.length; ++i) {
+        if (line.bIndex + 1 < index[i].pos) break
+      }
+      matches[line.aIndex].otherIndexes.push(index[i].path)
+    })
+  })
+  return matches
+}
+
+function continousMatches (matchArr) {
+  let buf = ''
+  let links = new Set()
+  const output = []
+  for (let i = 0; i < matchArr.length; ++i) {
+    if (matchArr[i].otherIndexes.length === 0) {
+      if (buf.length > 0 && links.size > 0) {
+        output.push({
+          block: buf,
+          plagarismLinks: Array.from(links)
+        })
+      }
+      buf = matchArr[i].line + '\n'
+      links = new Set()
+    } else {
+      buf += matchArr[i].line + '\n'
+      matchArr[i].otherIndexes.forEach(x => links.add(x))
+    }
+  }
+  if (buf.length > 0 && links.size > 0) {
+    output.push({
+      block: buf,
+      plagarismLinks: Array.from(links)
+    })
+  }
+  return output
+}
+
+module.exports = {
+  compareWithMatches,
+  concatByLanguage,
+  continousMatches,
+  diffRepos,
+  ext2Lang,
+  file2Lang,
+  findFiles,
+  findFilesWithIgnore,
+  getDirLanguages
+}
