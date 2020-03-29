@@ -5,6 +5,7 @@ const router = require('express').Router()
 const Promise = require('bluebird')
 const bodyParser = require('body-parser')
 const cheerio = require('cheerio')
+const config = require('config')
 const axios = require('axios')
 const cors = require('cors')
 
@@ -178,7 +179,10 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
   }, { concurrency: 1 })
   for (const matchPath in matches) {
     matchedList.push({
-      filePath: repoPathToLink(githubLink, matchPath),
+      filePath: matchPath
+        .split(/(\/|\\\\)/)
+        .slice(2)
+        .join('/'), // for cosmetic purposes only, don't have to use Windows/Linux seps
       sameAs: matches[matchPath]
     })
   }
