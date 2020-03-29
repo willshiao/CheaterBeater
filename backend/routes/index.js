@@ -248,7 +248,8 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
     totalChecked,
     totalSame,
     totalFilesChecked,
-    totalFilesSame: matchedList.length
+    totalFilesSame: matchedList.length,
+    cheaterScore: Math.min((totalSame / totalChecked) / 0.5 + (matchedList.length / totalFilesChecked) / 0.25, 1)
   }
 
   return res.successJson({
