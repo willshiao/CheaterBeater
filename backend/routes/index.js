@@ -58,12 +58,24 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
     return (await axios.get(link)).data
   }, { concurrency: 2 })
 
+  const members = []
+  const userProjectNamesAgg = []
   // get devpost of each project except original link
   for (let i = 0; i < userPages.length; i++) {
     const userPage = userPages[i]
     const $ = cheerio.load(userPage)
     const userProjects = new Set(Array.from($('#software-entries .link-to-software'))
       .map(el => $(el).attr('href')))
+    
+    const userProjectNames = new Set(Array.from($('.software-entry-name.entry-body > h5'))
+      .map(el => $(el).text().trim()))
+    console.log("oh shittttt", userProjectNames)
+    userProjectNamesAgg.push(userProjectNames)
+
+    const member = $('#portfolio-user-name').text().trim().split('\n')[0];
+    
+    console.log("Hewwo", member)
+    members.push(member)
     // console.log($('#software-entries .link-to-software').attr('href'))
     // const userProjects = new Set(Array.from($('#software-entries'))
     // .map(el => $(el).attr('href')))
@@ -71,6 +83,10 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
     // console.log(userProjects)
     connectedProjects.push(userProjects)
     // console.log(userPage)
+    
+    // num files copied
+    // line matches
+
   }
 
   // get github links for those projects
@@ -132,6 +148,8 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
         const mainFile = mainHashes[mainHash]
         const matchedFile = hashes[gLink][mainHash]
         console.log('Found match with: ', matchedFile)
+        // Same file
+        if (mainFile === matchedFile) continue
         if (mainFile in matches) {
           matches[mainFile].push(matchedFile)
         } else {
@@ -150,14 +168,45 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
   // 2. get all members of the projects and their devposts
   // 3. get all the projects of those members
 
-  return res.successJson({ page: data.data })
+
+  // aditya -> Toor, Joyride, Profanifree 
+  //   JSON Object needed by front-end
+  // var data = {
+  //       "team-members": [
+  //          "team-member1":{
+  //             "projects"😞"project1":"50%","project2":"70%","project3":"10%"]
+  //          }
+  //          "team-member2":{
+  //             "projects"😞"project1":"50%","project2":"70%","project3":"10%"]
+  //          }
+  //       ]
+  //    }
+
+  // "team-member" is github username
+  // "project" is project name
+  
+  return res.successJson(matches)
   // 2. get all members of the projects and their devposts
   // 3. get all the projects of those members
   // hi ji hwan
   // hi adi. Will is coding very well
   // Yes.
-  
-  return res.successJson({ page: data.data })
+  // "There are {} files that are the exact same with previous repos. Keep in mind that many of these may be library files and are not necessarily indicative of cheating"
+  // "There are {} files that are similar with previous repos. Some of the snippets we found include {} {} {}"
+
 }))
+// }))
+// }))
+// }))
+
+
+
+
+
+
+
+
+
+
 
 module.exports = router
