@@ -244,12 +244,13 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
     // console.log('Cont:', continousMatches(output))
     // console.log('Output:', output)
   }, true)
+  const cheaterScore = Math.min((totalSame / totalChecked) / 0.5 + (matchedList.length / totalFilesChecked) / 0.25, 1)
   const totalStats = {
     totalChecked,
     totalSame,
     totalFilesChecked,
     totalFilesSame: matchedList.length,
-    cheaterScore: Math.min((totalSame / totalChecked) / 0.5 + (matchedList.length / totalFilesChecked) / 0.25, 1)
+    cheaterScore: cheaterScore === null ? 0 : cheaterScore
   }
 
   return res.successJson({
