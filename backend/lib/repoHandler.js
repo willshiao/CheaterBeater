@@ -7,7 +7,7 @@ const config = require('config')
 const crypto = require('crypto')
 const path = require('path')
 const simpleGit = require('simple-git/promise')
-const { findFiles } = require('./extensionHelper')
+const { findFiles, findFilesWithIgnore } = require('./extensionHelper')
 
 const git = simpleGit()
 const REPO_DIR = config.get('repoDir')
@@ -18,7 +18,7 @@ const REPO_DIR = config.get('repoDir')
 mkdirp.sync(REPO_DIR)
 // console.log('Made:', made)
 
-async function cloneRepo(repoUrl, cacheRepos = true) {
+async function cloneRepo (repoUrl, cacheRepos = true) {
   const repoName = new URL(repoUrl).pathname.split('/').pop()
   const repoPath = path.join(REPO_DIR, repoName)
   let repoExists = true
@@ -57,7 +57,7 @@ async function hashFile (filename) {
 
 async function getHashes (repoPath) {
   const hashToFile = {}
-  await findFiles(repoPath, async (filePath) => {
+  await findFilesWithIgnore(repoPath, async (filePath) => {
     // console.log('Hashing:', filePath)
     const fileHash = await hashFile(filePath)
     hashToFile[fileHash] = filePath

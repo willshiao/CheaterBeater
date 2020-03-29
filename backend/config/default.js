@@ -10,10 +10,11 @@ module.exports = {
     'GCC Machine Description'
   ],
   excludeDirs: [
-    'node_modules', '__pycache__', '.git'
+    'node_modules', '__pycache__', '.git', 'site-packages', '.idea'
   ],
   // We can use MD5 because collisions shouldn't occur in normal usage
   // and collisions don't really matter
   hashAlgorithm: 'md5',
-  repoDir: './repos'
+  repoDir: './repos',
+  langDir: '___lang_jihwan'
 }
