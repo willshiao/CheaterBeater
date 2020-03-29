@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { CodeBlock, androidstudio } from 'react-code-blocks'
 import './Cblocks.scss'
-import { codeData } from '../../../../mocks';
+// import { codeData } from '../../../../mocks';
 
 class Cblocks extends Component {
   render(){
-    console.log(this.props.data);
+    console.log("Got props inside Cblocks", this.props);
+    const { codeBlocks } = this.props;
+
     return(
       <section className="Cblocks">
         <div className="container-fluid">
@@ -16,8 +18,8 @@ class Cblocks extends Component {
           </div>
           <div className="row justify-content-center">
             {
-              codeData.length > 0 && codeData.map(data => {
-                const { code, filePath, language } = data;
+              codeBlocks.length > 0 && codeBlocks.map(codeBlock => {
+                const { code, filePath, language } = codeBlock;
 
                 return (
                   <div className="col-8 Cblocks__block-container">
@@ -28,7 +30,7 @@ class Cblocks extends Component {
                           <div className="col-9">
                             <CodeBlock
                               text={block}
-                              language={language}
+                              language={language.toLowerCase()}
                               showLineNumbers={false}
                               theme={androidstudio}
                             />
@@ -36,7 +38,7 @@ class Cblocks extends Component {
                           <div className="col-3">
                             <div className="Cblocks__links">
                               <ul className="Cblocks__list">
-                                {plagiarismLinks.map(link => <li className="Cblocks__link">{link}</li>)}
+                                {plagiarismLinks && plagiarismLinks.length > 0 && plagiarismLinks.map(link => <li className="Cblocks__link">{link}</li>)}
                               </ul>
                             </div>
                           </div>
