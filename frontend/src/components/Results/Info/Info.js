@@ -23,8 +23,11 @@ class Info extends Component {
                   <BarGraph />
                 </div>
                 <div className="col">
-                  {/* {!data && <SafeMessage />} */}
-                  {!data && <FraudMessage />}
+                  {data ? (
+                    <FraudMessage />
+                  ) : (
+                    <SafeMessage />
+                  )}
                 </div>
               </div>
             </div>

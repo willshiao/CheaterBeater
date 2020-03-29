@@ -8,7 +8,9 @@ import Footer from '../Footer/Footer';
 
 class Results extends Component {
   render() {
+    console.log(this.props.location.state);
     const { data } = this.props.location.state;
+    console.log("Got data", data);
 
     return(
       <section className="Results">
