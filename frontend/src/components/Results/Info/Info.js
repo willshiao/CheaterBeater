@@ -6,6 +6,7 @@ import Graph from './Graph/Graph';
 import Cblocks from './Cblocks/Cblocks';
 import SafeMessage from './SafeMessage/SafeMessage';
 import FraudMessage from './FraudMessage/FraudMessage';
+import { CHEATER_LIMIT } from '../../../shared/constants';
 
 class Info extends Component {
   render() {
@@ -36,7 +37,7 @@ class Info extends Component {
                   />
                 </div>
                 <div className="col">
-                  {data ? (
+                  {totalStats.cheaterScore > CHEATER_LIMIT ? (
                     <FraudMessage />
                   ) : (
                     <SafeMessage />

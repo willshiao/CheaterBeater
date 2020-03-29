@@ -24,7 +24,9 @@ class Cblocks extends Component {
 
                 return (
                   <div className="col-8 Cblocks__block-container">
-                    <p className="Cblocks__fileName">{filePath}</p>
+                    <a href={filePath} className="Cblocks__fileNameLink">
+                      <p className="Cblocks__fileName">{filePath}</p>
+                    </a>
                     {code.map(({ block, plagiarismLinks }) => (
                       <div className="Cblocks__block">
                         <div className="row justify-content-center">
