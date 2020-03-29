@@ -211,19 +211,21 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
   const overallOutput = []
   let totalChecked = 0
   let totalSame = 0
+  let totalFilesChecked = 0
   await findFilesWithIgnore(mainRepoLocation, async (filename) => {
     const langName = file2Lang(filename)
     if (langName === null) return null
+    totalFilesChecked++
     const repos = lang2Repo[langName]
     const { matches, linesChecked } = await compareWithMatches(filename, mainRepoLocation, repos, langName, path2Link)
     const { blocks, linesSame } = continousMatches(matches)
     totalChecked += linesChecked
     totalSame += linesSame
 
-    if (blocks.length === 0) return null
     const code = blocks.filter(b => {
       return b.blockLines > 3 // ignore single-line copies
     })
+    if (code.length === 0) return null
     overallOutput.push({
       code,
       filePath: repoPathToLink(githubLink, filename),
@@ -234,7 +236,7 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
     // console.log('Cont:', continousMatches(output))
     // console.log('Output:', output)
   }, true)
-  const totalStats = { totalChecked, totalSame }
+  const totalStats = { totalChecked, totalSame, totalFilesChecked }
 
   return res.successJson({
     teamMembers: teamMemberList,
