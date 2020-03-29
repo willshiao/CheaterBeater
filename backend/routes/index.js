@@ -156,6 +156,7 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
   const hashes = {}
   const mainHashes = await getHashes(mainRepoLocation)
   const matches = {}
+  const matchedList = []
   await Promise.map(repoLocations, async ([gLink, repoDir]) => {
     if (gLink === githubLink) return null
     hashes[gLink] = await getHashes(repoDir)
@@ -166,14 +167,21 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
         console.log('Found match with: ', matchedFile)
         // Same file
         if (mainFile === matchedFile) continue
+        const matchedLink = repoPathToLink(gLink, matchedFile)
         if (mainFile in matches) {
-          matches[mainFile].push(matchedFile)
+          matches[mainFile].push(matchedLink)
         } else {
-          matches[mainFile] = [matchedFile]
+          matches[mainFile] = [matchedLink]
         }
       }
     }
   }, { concurrency: 1 })
+  for (const matchPath in matches) {
+    matchedList.push({
+      filePath: repoPathToLink(githubLink, matchPath),
+      sameAs: matches[matchPath]
+    })
+  }
   console.log(hashes)
   console.log('Matches:', matches)
 
@@ -240,7 +248,7 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
 
   return res.successJson({
     teamMembers: teamMemberList,
-    matches,
+    matchedList,
     projectName,
     partialMatches: overallOutput,
     totalStats
