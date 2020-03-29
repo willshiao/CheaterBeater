@@ -72,6 +72,9 @@ const myTreeData = [
 
 class Graph extends Component {
   render(){
+    const { treeData } = this.props;
+    console.log("Got props", treeData);
+
     return(
       <div className="container-fluid Graph__container">
         <div className="row justify-content-center">

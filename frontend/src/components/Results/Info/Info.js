@@ -32,8 +32,10 @@ class Info extends Component {
               </div>
             </div>
           </div>
-          <Cblocks data={data} />
-          {!data && <Graph /> }
+          {data &&
+            <Cblocks data={data} /> &&
+            <Graph treeData={{teamMembers: data.teamMembers, projectName: data.projectName}} />
+          }
         </div>
       </section>
     )

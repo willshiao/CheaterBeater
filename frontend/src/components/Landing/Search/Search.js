@@ -21,17 +21,23 @@ class Search extends Component {
     const { devpostUrl } = values;
     
     if (devpostUrl) {
-      this.setState({ data: codeData });
+      this.setState({ isLoading: true });
 
-    // axios.post(BASE_URL, {
-    //   url: devpostUrl
-    // })
-    //   .then(response => {
-    //     console.log("GOT RESPONSE FROM POST REQUEST", response);
-    //   })
-    //   .catch(error => {
-    //     console.error(error);
-    //   })
+      axios.post(`${BASE_URL}/devpost`, {
+        link: devpostUrl
+      })
+        .then(response => {
+          console.log("GOT RESPONSE FROM POST REQUEST", response);
+          const { status, data: { data } } = response;
+          
+          if (status !== 200) Promise.reject();
+
+          this.setState({ data, isLoading: false });
+        })
+        .catch(error => {
+          console.error(error);
+          this.setState({ isLoading: false });
+        })
     }
 
   }
@@ -78,7 +84,7 @@ class Search extends Component {
             </div>
           </Form>
           <div className="Search__loading">
-            {!isLoading && <img src={spinner} alt="Loading..." className="Search__spinner"/>}
+            {isLoading && <img src={spinner} alt="Loading..." className="Search__spinner"/>}
           </div>
         </div>
       </section>
