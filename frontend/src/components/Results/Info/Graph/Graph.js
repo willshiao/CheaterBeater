@@ -63,14 +63,14 @@ class Graph extends Component {
             nodeSvgShape={svgParent}
             translate={
               {
-                x: 675,
+                x: window.innerWidth/2.1,
                 y: 20
               }
             }
             scaleExtent={
               {
                 min: 0.1,
-                max: 0.51
+                max: 0.5
               }
             }
           />
