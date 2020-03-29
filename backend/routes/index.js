@@ -213,6 +213,7 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
     const repos = lang2Repo[langName]
     const output = await compareWithMatches(filename, mainRepoLocation, repos, langName)
     const contOutput = continousMatches(output)
+    if (contOutput.length === 0) return null
     overallOutput.push({
       code: contOutput,
       filePath: filename,

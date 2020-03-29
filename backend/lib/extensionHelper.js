@@ -162,7 +162,10 @@ async function diffRepos (repoPath1, repoPath2) {
 async function compareWithMatches (filename, mainRepo, otherRepos, langName) {
   console.log('Got input filename: ', filename)
   const fileContents = await fs.readFile(filename, 'utf8')
-  const fileLines = fileContents.split('\n')
+  const fileLines = fileContents
+    .split('\n')
+    .filter(l => l.trim().length > 0)
+    // .map(l => l.trim())
   const matches = fileLines.map(line => {
     return {
       line,
@@ -173,7 +176,7 @@ async function compareWithMatches (filename, mainRepo, otherRepos, langName) {
     if (repo === mainRepo) return null
     const [langStr, index] = await readLangFile(repo, langName)
     const langStrLines = langStr.split('\n')
-    const diff = patienceDiffPlus(fileLines, langStrLines)
+    const diff = patienceDiff(fileLines, langStrLines)
     // Iterate over the diff
     diff.lines.forEach(line => {
       // if (line.line.includes('isZipCodeValid')) console.log('Zip code:', line)
@@ -182,6 +185,9 @@ async function compareWithMatches (filename, mainRepo, otherRepos, langName) {
       for (i = 0; i < index.length; ++i) {
         if (line.bIndex + 1 < index[i].pos) break
       }
+      i = Math.min(i, index.length - 1)
+      if (line.aIndex >= matches.length)
+        console.log(`Warning: aIndex=${line.aIndex} >= size=${matches.length}`)
       matches[line.aIndex].otherIndexes.push(index[i].path)
     })
   })
