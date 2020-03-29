@@ -5,20 +5,20 @@ const content = {
   },
   about: {
     title: "About",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vel lectus eget dui sagittis rutrum. Curabitur sed elit sed mi imperdiet tempus. Aliquam commodo aliquet arcu, eget consequat enim aliquam non. Vestibulum posuere, arcu eu egestas vehicula, metus erat sollicitudin neque, id sodales justo tortor sed orci. Proin vitae ex eget ante semper accumsan."
+    description: "Cheater Beater is a full-stack web app that uses devpost submissions and github to detect hackathon submission fraud. Our goal is not to make a statement about whether fraud occurred, but to point to hackathon submissions where a closer look is warranted."
   },
   how: {
     title: "How it Works",
-    firstSubtitle: "Transparent",
-    secondSubtitle: "Transparent",
-    thirdSubtitle: "Transparent",
-    firstDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vel lectus eget dui sagittis rutrum. Curabitur sed elit sed mi imperdiet tempus. Aliquam commodo aliquet arcu, eget consequat enim aliquam non. Vestibulum posuere, arcu eu egestas vehicula, metus erat sollicitudin neque, id sodales justo tortor sed orci.",
-    secondDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vel lectus eget dui sagittis rutrum. Curabitur sed elit sed mi imperdiet tempus. Aliquam commodo aliquet arcu, eget consequat enim aliquam non. Vestibulum posuere, arcu eu egestas vehicula, metus erat sollicitudin neque, id sodales justo tortor sed orci.",
-    thirdDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vel lectus eget dui sagittis rutrum. Curabitur sed elit sed mi imperdiet tempus. Aliquam commodo aliquet arcu, eget consequat enim aliquam non. Vestibulum posuere, arcu eu egestas vehicula, metus erat sollicitudin neque, id sodales justo tortor sed orci.",
+    firstSubtitle: "Enter a URL",
+    secondSubtitle: "Analyze the Data",
+    thirdSubtitle: "Make a Decision",
+    firstDescription: "Enter a URL of the devpost submission",
+    secondDescription: "Take a look at the report you received. We look at the user's previous devpost submissions, along with the devpost submissions of the people they worked with. We look through all of this code and show you where the code is the same.",
+    thirdDescription: "Computers are not people! Based on the information provided by our app, take a closer look at the hackathon submission.",
   },
   challenges: {
     title: "Challenges",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vel lectus eget dui sagittis rutrum. Curabitur sed elit sed mi imperdiet tempus. Aliquam commodo aliquet arcu, eget consequat enim aliquam non. Vestibulum posuere, arcu eu egestas vehicula, metus erat sollicitudin neque, id sodales justo tortor sed orci. Proin vitae ex eget ante semper accumsan."
+    description: "From scraping to hashing, the breadth and scope of our project introduced many challenges. It was especially challenging to to efficiently compare the code of the repository while ensuring transparency and fairness in the evaluation of a project. We also found it difficult to scrape devpost and determine what information was required and where inside the webpage it was located."
   },
   footer: {
     description: "Made with 🐍 at LA Hacks 2020"
