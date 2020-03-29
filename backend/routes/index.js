@@ -9,7 +9,7 @@ const axios = require('axios')
 const cors = require('cors')
 
 const { AsyncHandler } = require('../lib/errorHandlers.js')
-const { getDirLanguages } = require('../lib/extensionHelper.js')
+const { compareWithMatches, continousMatches, getDirLanguages, findFilesWithIgnore, file2Lang, concatByLanguage } = require('../lib/extensionHelper.js')
 const { cloneRepo, getHashes } = require('../lib/repoHandler.js')
 
 router.use(bodyParser.json())
@@ -136,9 +136,18 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
     .filter(x => x[1])
 
   const dirLanguages = {}
+  const lang2Repo = {}
   await Promise.map(repoLocations, async (pair) => {
-    console.log(pair)
-    dirLanguages[pair[0]] = await getDirLanguages(pair[1])
+    // console.log(pair)
+    const langs = await getDirLanguages(pair[1])
+    langs.forEach(lang => {
+      if (lang in lang2Repo) {
+        lang2Repo[lang].push(pair[1])
+      } else {
+        lang2Repo[lang] = [pair[1]]
+      }
+    })
+    dirLanguages[pair[0]] = langs
   }, { concurrency: 1 })
   console.log(dirLanguages)
 
@@ -148,7 +157,7 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
   await Promise.map(repoLocations, async ([gLink, repoDir]) => {
     if (gLink === githubLink) return null
     hashes[gLink] = await getHashes(repoDir)
-    for (let mainHash in mainHashes) {
+    for (const mainHash in mainHashes) {
       if (mainHash in hashes[gLink]) {
         const mainFile = mainHashes[mainHash]
         const matchedFile = hashes[gLink][mainHash]
@@ -164,8 +173,9 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
     }
   }, { concurrency: 1 })
   console.log(hashes)
-  console.log('Matches:', matches);
-  
+  console.log('Matches:', matches)
+
+  await Promise.map(repoLocations, async ([__, x]) => concatByLanguage(x), { concurrency: 1 })
   // handle success
   // parse response data
   // now parse response to get the following:
@@ -196,10 +206,27 @@ router.post('/devpost', AsyncHandler(async (req, res) => {
   console.log(teamMemberList)
   console.log("project name", projectName)
 
+  const overallOutput = []
+  await findFilesWithIgnore(mainRepoLocation, async (filename) => {
+    const langName = file2Lang(filename)
+    if (langName === null) return null
+    const repos = lang2Repo[langName]
+    const output = await compareWithMatches(filename, mainRepoLocation, repos, langName)
+    const contOutput = continousMatches(output)
+    overallOutput.push({
+      code: contOutput,
+      filePath: filename,
+      language: langName
+    })
+    // console.log('Cont:', continousMatches(output))
+    // console.log('Output:', output)
+  }, true)
+
   return res.successJson({
     teamMembers: teamMemberList,
     matches,
-    projectName
+    projectName,
+    partialMatches: overallOutput
   })
   // 2. get all members of the projects and their devposts
   // 3. get all the projects of those members

@@ -88,6 +88,7 @@ async function getDirLanguages (targetPath) {
 }
 
 async function concatByLanguage (targetPath, useFs = true) {
+  // console.log('Concat called on ', targetPath)
   const dirName = path.join(targetPath, REPR_DIR)
   await mkdirp(dirName)
   try {
@@ -137,10 +138,10 @@ async function concatByLanguage (targetPath, useFs = true) {
 
 async function readLangFile (targetRepo, targetLang) {
   const dirName = path.join(targetRepo, REPR_DIR)
-  console.log('Reading from', dirName)
+  // console.log('Reading from', dirName)
   const index = JSON.parse(await fs.readFile(path.join(dirName, 'index-json')))
   const cleanLangName = targetLang.split(' ').join('_')
-  console.log('Reading from', path.join(dirName, cleanLangName))
+  // console.log('Reading from', path.join(dirName, cleanLangName))
   const langStr = await fs.readFile(path.join(dirName, cleanLangName), 'utf8')
   return [langStr, index[targetLang]]
 }
