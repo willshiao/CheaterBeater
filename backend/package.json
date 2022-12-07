@@ -27,6 +27,6 @@
     "language-map": "^1.4.0",
     "mkdirp": "^1.0.3",
     "redis": "^3.0.2",
-    "simple-git": "^1.132.0"
+    "simple-git": "^3.15.0"
   }
 }
